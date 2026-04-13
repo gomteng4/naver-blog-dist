@@ -266,6 +266,83 @@
     .mode-card .mode-desc { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
     .mode-card.full { grid-column: 1 / -1; }
 
+    /* ── Grid 시각 다이어그램 ── */
+    .grid-visual-wrap {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .grid-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      width: 130px;
+      height: 130px;
+      border: 2px solid var(--accent-dark);
+      border-radius: 8px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .grid-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+    .grid-cell:nth-child(1) { background: #4a90d9; }
+    .grid-cell:nth-child(2) { background: #e07c3a; }
+    .grid-cell:nth-child(3) { background: #4caf77; }
+    .grid-cell:nth-child(4) { background: #9b5ed4; }
+    .grid-arrow {
+      font-size: 22px;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .grid-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 5px;
+      width: 130px;
+      flex-shrink: 0;
+    }
+    .grid-split-cell {
+      width: 60px;
+      height: 60px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+      position: relative;
+    }
+    .grid-split-cell:nth-child(1) { background: #4a90d9; }
+    .grid-split-cell:nth-child(2) { background: #e07c3a; }
+    .grid-split-cell:nth-child(3) { background: #4caf77; }
+    .grid-split-cell:nth-child(4) { background: #9b5ed4; }
+    .grid-split-cell .cell-label {
+      position: absolute;
+      bottom: 3px;
+      right: 5px;
+      font-size: 9px;
+      opacity: 0.9;
+    }
+    .grid-visual-caption {
+      width: 100%;
+      text-align: center;
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
     /* ── 자료 다운로드 ── */
     .files-card {
       background: var(--surface);
@@ -479,6 +556,12 @@
             <span>사용할 네이버 아이디/비밀번호를 등록합니다.<br>
             여러 계정을 등록해두고 선택하여 사용할 수 있습니다.</span>
           </div>
+          <div style="background:var(--warn-bg);border:1px solid var(--warn-bd);border-radius:8px;padding:11px 14px;margin-top:10px;font-size:12.5px;color:var(--warn-txt);line-height:1.7;">
+            <strong>⚠ 블로그 주소(ID)가 로그인 아이디와 다른 경우</strong><br>
+            네이버 계정 아이디(로그인 ID)와 블로그 주소(<code>blog.naver.com/<em>블로그ID</em></code>)가 다른 경우,
+            계정 등록 다이얼로그의 <strong>블로그 ID</strong> 입력 필드에 실제 블로그 주소 ID를 따로 입력하세요.<br>
+            <span style="color:var(--muted);font-size:11.5px;">비워두면 로그인 후 자동 감지를 시도합니다.</span>
+          </div>
         </li>
         <li class="step">
           <div class="step-n">5</div>
@@ -503,25 +586,27 @@
     <div class="tab-panel">
       <div class="card-title">AI 글 생성 사용 요령</div>
       <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:18px;">
-        제목 목록과 작성 지침을 준비해두면, Gemini AI가 제목을 한 개씩 꺼내 글을 자동 작성하고<br>날짜 폴더에 MD 파일로 저장합니다.
+        제목 목록과 작성 지침을 준비해두면, Gemini AI가 제목을 한 개씩 꺼내<br>
+        블로그 글(MD)과 이미지 프롬프트(image_prompts.txt)를 <strong style="color:var(--text)">동시에 자동 생성</strong>합니다.
       </p>
 
-      <div class="section-divider">준비 파일 (아이디 폴더 안에 생성)</div>
+      <div class="section-divider">준비 파일 — 아이디 폴더 안에 <code>prompt/</code> 폴더 생성</div>
       <div class="folder-tree">
         <span class="dir">콘텐츠/{아이디}/</span><br>
-        &nbsp;&nbsp;└── <span class="dir">prompt/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">이 폴더를 직접 만드세요</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">guide.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">글 작성 지침 (아래 자료 다운로드 참고)</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">titles.txt</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">제목 목록 — 한 줄에 하나씩</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="file">used_titles.json</span>&nbsp;&nbsp;<span class="note">자동 생성 — 사용된 제목 기록</span>
+        &nbsp;&nbsp;└── <span class="dir">prompt/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">직접 만드세요</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">guide.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">블로그 글 작성 지침 ← 필수</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">titles.txt</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">제목 목록 (한 줄에 하나) ← 필수</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">image_guide.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">이미지 프롬프트 추가 지침 (선택)</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="file">used_titles.json</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">자동 생성 — 사용된 제목 기록</span>
       </div>
 
-      <div class="section-divider">titles.txt 작성 예시</div>
+      <div class="section-divider">titles.txt 예시</div>
       <div class="folder-tree">
         가경동 선불폰 개통 어떻게 하나요?<br>
         북가좌동 선불폰 KT망 vs LGU+망<br>
         명동 선불유심 약정 없이 쓰기 좋은 이유<br>
         신정동 선불폰 셀프개통 방법<br>
-        ...
+        <span class="note">... (한 줄에 제목 하나씩)</span>
       </div>
 
       <div class="section-divider">실행 흐름</div>
@@ -536,30 +621,39 @@
         <li class="step">
           <div class="step-n">2</div>
           <div class="step-body">
-            <strong>guide.md 지침에 맞게 Gemini가 글 작성</strong>
-            <span>선택한 제목 + guide.md 지침을 Gemini API에 전달 → 마크다운 형식으로 글 생성.</span>
+            <strong>guide.md 지침에 맞게 Gemini가 블로그 글 작성</strong>
+            <span>제목 + guide.md 지침 → Gemini API → 마크다운 형식 블로그 본문 생성.</span>
           </div>
         </li>
         <li class="step">
           <div class="step-n">3</div>
           <div class="step-body">
-            <strong>날짜 폴더 자동 생성 → MD 파일 저장</strong>
-            <span><code>YYYYMMDD/</code> 폴더가 자동 생성되고 <code>{제목}.md</code> 파일이 저장됩니다.<br>
-            같은 날 여러 개 생성 시 <code>YYYYMMDD_01/</code>, <code>YYYYMMDD_02/</code> 형식으로 번호가 붙습니다.</span>
+            <strong>생성된 본문 기반으로 image_prompts.txt 자동 생성</strong>
+            <span>블로그 본문의 이미지 배치([이미지 1]~[이미지 4])를 분석해<br>
+            각 섹션에 맞는 이미지 프롬프트 + 썸네일 프롬프트를 자동으로 작성합니다.</span>
           </div>
         </li>
         <li class="step">
           <div class="step-n">4</div>
           <div class="step-body">
-            <strong>이미지 생성 후 포스팅 실행</strong>
-            <span>생성된 날짜 폴더에 <code>image_prompts.txt</code>를 추가하면 이미지도 자동 생성됩니다.<br>
-            이후 포스팅 시작 버튼으로 블로그에 자동 업로드합니다.</span>
+            <strong>날짜 폴더 자동 생성 → 두 파일 저장</strong>
+            <span><code>YYYYMMDD/</code> 폴더가 자동 생성되고<br>
+            <code>{제목}.md</code> + <code>image_prompts.txt</code> 가 함께 저장됩니다.<br>
+            같은 날 여러 개 생성 시 <code>YYYYMMDD_01/</code>, <code>YYYYMMDD_02/</code> 형식으로 번호가 붙습니다.</span>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-n">5</div>
+          <div class="step-body">
+            <strong>이미지 생성 → 포스팅 실행</strong>
+            <span>프로그램에서 생성된 날짜 폴더를 선택하고 <strong>[포스팅 시작]</strong>을 누르면<br>
+            이미지 자동 생성 → 블로그 자동 업로드까지 한 번에 진행됩니다.</span>
           </div>
         </li>
       </ol>
       <div class="tip-box">
-        <strong>guide.md 작성 방법</strong> — 아래 <em>자료 다운로드</em>에서 <em>글작성_지침_템플릿.md</em>를 받아<br>
-        브랜드 정보 섹션만 수정하면 바로 사용할 수 있습니다.
+        <strong>guide.md 준비</strong> — 아래 <em>자료 다운로드</em>에서 <em>글작성_지침_템플릿.md</em>를 받아
+        브랜드 정보 섹션만 수정하면 바로 <code>guide.md</code>로 사용할 수 있습니다.
       </div>
     </div>
 
@@ -573,10 +667,32 @@
 
       <div class="section-divider">생성 방식 3가지</div>
       <div class="mode-grid">
-        <div class="mode-card">
+        <div class="mode-card full">
           <div class="mode-label">Grid 방식</div>
           <div class="mode-title">2×2 그리드 → 자동 분할</div>
-          <div class="mode-desc">이미지 4개를 하나의 그리드로 생성 후 자동 분할. API 1회 호출 — 빠르고 경제적.</div>
+          <div class="mode-desc" style="margin-bottom:12px;">이미지 4개를 하나의 그리드로 한 번에 생성 후 자동 분할. API 1회 호출 — 빠르고 경제적.</div>
+          <div class="grid-visual-wrap">
+            <div>
+              <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:5px;">Gemini 생성 (1장)</div>
+              <div class="grid-box">
+                <div class="grid-cell">이미지 1</div>
+                <div class="grid-cell">이미지 2</div>
+                <div class="grid-cell">이미지 3</div>
+                <div class="grid-cell">이미지 4</div>
+              </div>
+            </div>
+            <div class="grid-arrow">→</div>
+            <div>
+              <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:5px;">자동 분할 (4장)</div>
+              <div class="grid-split">
+                <div class="grid-split-cell">image_1<span class="cell-label">.png</span></div>
+                <div class="grid-split-cell">image_2<span class="cell-label">.png</span></div>
+                <div class="grid-split-cell">image_3<span class="cell-label">.png</span></div>
+                <div class="grid-split-cell">image_4<span class="cell-label">.png</span></div>
+              </div>
+            </div>
+            <div class="grid-visual-caption">grid.png 1장 생성 → image_1~4.png 자동 저장</div>
+          </div>
         </div>
         <div class="mode-card">
           <div class="mode-label">개별 방식</div>
