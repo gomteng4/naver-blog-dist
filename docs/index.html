@@ -35,6 +35,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+      font-size: 16px;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
@@ -43,7 +44,7 @@
       align-items: center;
       padding: 56px 20px 88px;
     }
-    .container { width: 100%; max-width: 680px; }
+    .container { width: 100%; max-width: 760px; }
 
     /* ── 헤더 ── */
     .header { text-align: center; margin-bottom: 48px; }
@@ -67,7 +68,7 @@
       margin-bottom: 12px;
     }
     .header h1 em { color: var(--accent-dark); font-style: normal; }
-    .header p { color: var(--muted); font-size: 14.5px; line-height: 1.75; }
+    .header p { color: var(--muted); font-size: 17px; line-height: 1.75; }
 
     /* ── 카드 공통 ── */
     .card {
@@ -78,7 +79,7 @@
       margin-bottom: 16px;
     }
     .card-title {
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
@@ -120,8 +121,8 @@
       font-weight: 700;
       color: var(--green);
     }
-    .dl-card h2 { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
-    .dl-card p { color: var(--muted); font-size: 13.5px; line-height: 1.65; margin-bottom: 20px; }
+    .dl-card h2 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+    .dl-card p { color: var(--muted); font-size: 16px; line-height: 1.65; margin-bottom: 20px; }
     .btn-dl {
       display: inline-flex;
       align-items: center;
@@ -163,9 +164,9 @@
       border: none;
       border-bottom: 2px solid transparent;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
-      padding: 11px 6px 10px;
+      padding: 12px 6px 11px;
       cursor: pointer;
       transition: color .15s, border-color .15s, background .15s;
       font-family: inherit;
@@ -213,15 +214,15 @@
       color: var(--accent-dark);
       margin-top: 2px;
     }
-    .step-body strong { display: block; font-size: 15px; margin-bottom: 4px; color: var(--text); }
-    .step-body span { font-size: 14px; color: var(--muted); line-height: 1.7; }
+    .step-body strong { display: block; font-size: 17px; margin-bottom: 5px; color: var(--text); }
+    .step-body span { font-size: 15.5px; color: var(--muted); line-height: 1.75; }
     code {
       background: var(--card);
       border: 1px solid var(--border2);
       border-radius: 4px;
-      padding: 1px 6px;
+      padding: 2px 7px;
       font-family: Consolas, monospace;
-      font-size: 13px;
+      font-size: 14px;
       color: #b86000;
     }
 
@@ -230,9 +231,9 @@
       background: #fafafa;
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 14px 18px;
+      padding: 16px 20px;
       font-family: Consolas, monospace;
-      font-size: 13.5px;
+      font-size: 15px;
       color: #444;
       line-height: 2;
       margin: 10px 0;
@@ -255,15 +256,15 @@
       padding: 14px 16px;
     }
     .mode-card .mode-label {
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--accent-dark);
       margin-bottom: 5px;
     }
-    .mode-card .mode-title { font-size: 15px; font-weight: 700; margin-bottom: 5px; color: var(--text); }
-    .mode-card .mode-desc { font-size: 13.5px; color: var(--muted); line-height: 1.65; }
+    .mode-card .mode-title { font-size: 17px; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+    .mode-card .mode-desc { font-size: 15px; color: var(--muted); line-height: 1.7; }
     .mode-card.full { grid-column: 1 / -1; }
 
     /* ── Grid 시각 다이어그램 ── */
@@ -352,8 +353,8 @@
       margin-bottom: 16px;
       box-shadow: 0 1px 6px rgba(0,0,0,0.04);
     }
-    .files-card h3 { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
-    .files-card .sub { font-size: 13px; color: var(--muted); margin-bottom: 18px; line-height: 1.6; }
+    .files-card h3 { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+    .files-card .sub { font-size: 15px; color: var(--muted); margin-bottom: 18px; line-height: 1.65; }
     .file-row {
       display: flex;
       align-items: center;
@@ -362,8 +363,8 @@
       border-bottom: 1px solid var(--border);
     }
     .file-row:last-child { border-bottom: none; }
-    .file-info-left .file-name { font-size: 13.5px; font-weight: 700; margin-bottom: 2px; }
-    .file-info-left .file-desc { font-size: 12px; color: var(--muted); }
+    .file-info-left .file-name { font-size: 16px; font-weight: 700; margin-bottom: 3px; }
+    .file-info-left .file-desc { font-size: 14px; color: var(--muted); }
     .btn-file {
       display: inline-flex;
       align-items: center;
@@ -371,7 +372,7 @@
       background: var(--card);
       border: 1px solid var(--border2);
       color: var(--text2);
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 700;
       padding: 7px 14px;
       border-radius: 7px;
@@ -435,8 +436,8 @@
       background: var(--green-bg);
       border: 1px solid var(--green-bd);
       border-radius: 8px;
-      padding: 13px 18px;
-      font-size: 13.5px;
+      padding: 14px 20px;
+      font-size: 15px;
       color: #1a5c30;
       line-height: 1.75;
       margin: 12px 0 4px;
@@ -445,7 +446,7 @@
 
     /* ── 섹션 구분 ── */
     .section-divider {
-      font-size: 12.5px;
+      font-size: 14px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
@@ -577,83 +578,83 @@
 
       <!-- ── 블로그 ID 안내 (steps 외부, 전체 너비) ── -->
       <div style="background:var(--warn-bg);border:1px solid var(--warn-bd);border-radius:10px;padding:18px 20px;margin-top:16px;">
-        <div style="font-size:13.5px;font-weight:700;color:var(--warn-txt);margin-bottom:4px;">⚠ 블로그 주소가 로그인 아이디와 다른 경우</div>
-        <p style="font-size:12.5px;color:#5a4800;line-height:1.7;margin-bottom:16px;">
+        <div style="font-size:16px;font-weight:700;color:var(--warn-txt);margin-bottom:4px;">⚠ 블로그 주소가 로그인 아이디와 다른 경우</div>
+        <p style="font-size:14.5px;color:#5a4800;line-height:1.7;margin-bottom:16px;">
           네이버는 로그인 아이디와 블로그 주소(URL)가 다를 수 있습니다.<br>
           본인 블로그를 크롬에서 열었을 때 주소창을 확인하세요.
         </p>
 
         <!-- 브라우저 주소창 목업 -->
         <div style="margin-bottom:16px;">
-          <div style="font-size:11.5px;color:#7a6000;margin-bottom:6px;font-weight:600;">예시 — 내 블로그 주소창</div>
+          <div style="font-size:13.5px;color:#7a6000;margin-bottom:6px;font-weight:600;">예시 — 내 블로그 주소창</div>
           <div style="background:#f0f0f0;border-radius:8px;padding:7px 12px;display:flex;align-items:center;gap:8px;font-family:monospace;max-width:400px;">
-            <span style="color:#888;font-size:13px;">←  →  ↺</span>
-            <div style="flex:1;background:#fff;border:1px solid #d0d0d0;border-radius:20px;padding:5px 14px;font-size:12.5px;color:#1a1a1a;display:flex;align-items:center;gap:6px;">
-              <span style="color:#999;font-size:11px;">🔒</span>
+            <span style="color:#888;font-size:15px;">←  →  ↺</span>
+            <div style="flex:1;background:#fff;border:1px solid #d0d0d0;border-radius:20px;padding:5px 14px;font-size:14.5px;color:#1a1a1a;display:flex;align-items:center;gap:6px;">
+              <span style="color:#999;font-size:13px;">🔒</span>
               <span><strong style="color:#1558d6;">blog.naver.com</strong><span style="color:#333;">/newenglish_</span></span>
             </div>
           </div>
-          <div style="font-size:11.5px;color:#888;margin-top:5px;padding-left:4px;">주소창에 <code style="background:#fff3c0;padding:1px 4px;border-radius:3px;">blog.naver.com/</code> 뒤에 오는 부분이 <strong>블로그 ID</strong>입니다.</div>
+          <div style="font-size:13.5px;color:#888;margin-top:5px;padding-left:4px;">주소창에 <code style="background:#fff3c0;padding:1px 4px;border-radius:3px;">blog.naver.com/</code> 뒤에 오는 부분이 <strong>블로그 ID</strong>입니다.</div>
         </div>
 
         <!-- 같은 경우 vs 다른 경우 비교 -->
-        <div style="font-size:11.5px;color:#7a6000;margin-bottom:8px;font-weight:600;">어떤 경우에 해당하나요?</div>
+        <div style="font-size:13.5px;color:#7a6000;margin-bottom:8px;font-weight:600;">어떤 경우에 해당하나요?</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
           <!-- 같은 경우 -->
           <div style="background:#f0faf4;border:1px solid #b7dfc5;border-radius:8px;padding:12px 14px;">
-            <div style="font-size:11px;font-weight:700;color:#1a7f3c;margin-bottom:8px;">✅ 입력 불필요 (자동 감지)</div>
-            <div style="font-size:11.5px;color:#333;line-height:1.9;">
+            <div style="font-size:13px;font-weight:700;color:#1a7f3c;margin-bottom:8px;">✅ 입력 불필요 (자동 감지)</div>
+            <div style="font-size:13.5px;color:#333;line-height:1.9;">
               로그인 아이디: <code style="background:#e8f5e9;padding:1px 5px;border-radius:3px;">newenglish_</code><br>
               블로그 주소: <code style="background:#e8f5e9;padding:1px 5px;border-radius:3px;">newenglish_</code>
             </div>
-            <div style="font-size:11px;color:#888;margin-top:6px;">두 값이 같으면 블로그 ID 비워도 됩니다.</div>
+            <div style="font-size:13px;color:#888;margin-top:6px;">두 값이 같으면 블로그 ID 비워도 됩니다.</div>
           </div>
           <!-- 다른 경우 -->
           <div style="background:#fff8ec;border:2px solid #f0a500;border-radius:8px;padding:12px 14px;">
-            <div style="font-size:11px;font-weight:700;color:#c07000;margin-bottom:8px;">⚠ 블로그 ID 직접 입력 필요</div>
-            <div style="font-size:11.5px;color:#333;line-height:1.9;">
+            <div style="font-size:13px;font-weight:700;color:#c07000;margin-bottom:8px;">⚠ 블로그 ID 직접 입력 필요</div>
+            <div style="font-size:13.5px;color:#333;line-height:1.9;">
               로그인 아이디: <code style="background:#fff3c0;padding:1px 5px;border-radius:3px;">abc1234@naver</code><br>
               블로그 주소: <code style="background:#fff3c0;padding:1px 5px;border-radius:3px;">newenglish_</code>
             </div>
-            <div style="font-size:11px;color:#888;margin-top:6px;">두 값이 다르면 아래 필드에 입력하세요.</div>
+            <div style="font-size:13px;color:#888;margin-top:6px;">두 값이 다르면 아래 필드에 입력하세요.</div>
           </div>
         </div>
 
         <!-- 계정 추가 다이얼로그 목업 -->
-        <div style="font-size:11.5px;color:#7a6000;margin-bottom:10px;font-weight:600;">계정 추가 화면에서 입력 위치</div>
+        <div style="font-size:13.5px;color:#7a6000;margin-bottom:10px;font-weight:600;">계정 추가 화면에서 입력 위치</div>
         <div style="background:#ffffff;border:1px solid #d0d0d0;border-radius:10px;box-shadow:0 3px 14px rgba(0,0,0,0.10);overflow:hidden;font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;">
           <!-- 타이틀바 -->
           <div style="background:#f0f0f0;border-bottom:1px solid #ddd;padding:8px 16px;display:flex;align-items:center;gap:7px;">
             <div style="width:11px;height:11px;border-radius:50%;background:#ff5f57;"></div>
             <div style="width:11px;height:11px;border-radius:50%;background:#febc2e;"></div>
             <div style="width:11px;height:11px;border-radius:50%;background:#28c840;"></div>
-            <span style="flex:1;text-align:center;font-size:12.5px;font-weight:600;color:#333;margin-right:38px;">계정 추가</span>
+            <span style="flex:1;text-align:center;font-size:14.5px;font-weight:600;color:#333;margin-right:38px;">계정 추가</span>
           </div>
           <!-- 폼 바디 -->
           <div style="padding:20px 28px 18px;">
             <!-- 아이디 -->
             <div style="display:flex;align-items:center;margin-bottom:12px;">
-              <label style="width:100px;font-size:12.5px;color:#555;flex-shrink:0;">아이디</label>
-              <div style="flex:1;border:1px solid #e5e5e5;border-radius:6px;padding:7px 12px;font-size:12.5px;background:#fff;color:#1a1a1a;">abc1234</div>
+              <label style="width:100px;font-size:14.5px;color:#555;flex-shrink:0;">아이디</label>
+              <div style="flex:1;border:1px solid #e5e5e5;border-radius:6px;padding:7px 12px;font-size:14.5px;background:#fff;color:#1a1a1a;">abc1234</div>
             </div>
             <!-- 비밀번호 -->
             <div style="display:flex;align-items:center;margin-bottom:12px;">
-              <label style="width:100px;font-size:12.5px;color:#555;flex-shrink:0;">비밀번호</label>
-              <div style="flex:1;border:1px solid #e5e5e5;border-radius:6px;padding:7px 12px;font-size:12.5px;background:#fff;color:#1a1a1a;letter-spacing:5px;">●●●●●●</div>
+              <label style="width:100px;font-size:14.5px;color:#555;flex-shrink:0;">비밀번호</label>
+              <div style="flex:1;border:1px solid #e5e5e5;border-radius:6px;padding:7px 12px;font-size:14.5px;background:#fff;color:#1a1a1a;letter-spacing:5px;">●●●●●●</div>
             </div>
             <!-- 블로그 ID — 강조 -->
             <div style="display:flex;align-items:center;margin-bottom:4px;">
-              <label style="width:100px;font-size:12.5px;color:#555;flex-shrink:0;line-height:1.5;">블로그 ID<br><span style="font-size:10.5px;color:#aaa;">(선택)</span></label>
-              <div style="flex:1;border:2px solid #f0a500;border-radius:6px;padding:7px 12px;font-size:12.5px;background:#fffdf0;color:#1a1a1a;display:flex;align-items:center;justify-content:space-between;">
+              <label style="width:100px;font-size:14.5px;color:#555;flex-shrink:0;line-height:1.5;">블로그 ID<br><span style="font-size:12px;color:#aaa;">(선택)</span></label>
+              <div style="flex:1;border:2px solid #f0a500;border-radius:6px;padding:7px 12px;font-size:14.5px;background:#fffdf0;color:#1a1a1a;display:flex;align-items:center;justify-content:space-between;">
                 <span>newenglish_</span>
                 <span style="font-size:10px;background:#f0a500;color:#fff;padding:2px 8px;border-radius:3px;white-space:nowrap;margin-left:8px;">← 여기에 블로그 주소 ID 입력</span>
               </div>
             </div>
-            <div style="font-size:11.5px;color:#999;padding-left:100px;margin-bottom:18px;">※ 비워두면 네이버 아이디를 블로그 주소로 사용</div>
+            <div style="font-size:13.5px;color:#999;padding-left:100px;margin-bottom:18px;">※ 비워두면 네이버 아이디를 블로그 주소로 사용</div>
             <!-- 버튼 -->
             <div style="display:flex;justify-content:center;gap:10px;">
-              <div style="background:#FFE812;color:#1a1a1a;font-size:12.5px;font-weight:700;padding:8px 36px;border-radius:7px;">추가</div>
-              <div style="background:#e0e0e0;color:#444;font-size:12.5px;padding:8px 36px;border-radius:7px;">취소</div>
+              <div style="background:#FFE812;color:#1a1a1a;font-size:14.5px;font-weight:700;padding:8px 36px;border-radius:7px;">추가</div>
+              <div style="background:#e0e0e0;color:#444;font-size:14.5px;padding:8px 36px;border-radius:7px;">취소</div>
             </div>
           </div>
         </div>
@@ -663,7 +664,7 @@
     <!-- 탭 2: AI 글 생성 -->
     <div class="tab-panel">
       <div class="card-title">AI 글 생성 사용 요령</div>
-      <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:18px;">
+      <p style="font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:18px;">
         제목 목록과 작성 지침을 준비해두면, Gemini AI가 제목을 한 개씩 꺼내<br>
         블로그 글(MD)과 이미지 프롬프트(image_prompts.txt)를 <strong style="color:var(--text)">동시에 자동 생성</strong>합니다.
       </p>
@@ -738,7 +739,7 @@
     <!-- 탭 3: 이미지 생성 -->
     <div class="tab-panel">
       <div class="card-title">이미지 생성 요령</div>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.7;">
+      <p style="font-size:15px;color:var(--muted);margin-bottom:16px;line-height:1.7;">
         날짜 폴더에 <code>image_prompts.txt</code>를 넣으면 Gemini API로 이미지를 자동 생성합니다.<br>
         API 키는 앱 설정에서 입력합니다.
       </p>
@@ -751,7 +752,7 @@
           <div class="mode-desc" style="margin-bottom:12px;">이미지 4개를 하나의 그리드로 한 번에 생성 후 자동 분할. API 1회 호출 — 빠르고 경제적.</div>
           <div class="grid-visual-wrap">
             <div>
-              <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:5px;">Gemini 생성 (1장)</div>
+              <div style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:5px;">Gemini 생성 (1장)</div>
               <div class="grid-box">
                 <div class="grid-cell">이미지 1</div>
                 <div class="grid-cell">이미지 2</div>
@@ -761,7 +762,7 @@
             </div>
             <div class="grid-arrow">→</div>
             <div>
-              <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:5px;">자동 분할 (4장)</div>
+              <div style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:5px;">자동 분할 (4장)</div>
               <div class="grid-split">
                 <div class="grid-split-cell">image_1<span class="cell-label">.png</span></div>
                 <div class="grid-split-cell">image_2<span class="cell-label">.png</span></div>
