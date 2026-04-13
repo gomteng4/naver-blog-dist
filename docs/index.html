@@ -556,57 +556,6 @@
             <span>사용할 네이버 아이디/비밀번호를 등록합니다.<br>
             여러 계정을 등록해두고 선택하여 사용할 수 있습니다.</span>
           </div>
-          <div style="background:var(--warn-bg);border:1px solid var(--warn-bd);border-radius:8px;padding:13px 16px;margin-top:10px;font-size:12.5px;color:var(--warn-txt);line-height:1.7;">
-            <strong>⚠ 블로그 주소(ID)가 로그인 아이디와 다른 경우</strong><br>
-            <span style="font-size:12px;color:#5a4a00;">
-              네이버 로그인 아이디와 <code style="background:#fff3c0;padding:1px 4px;border-radius:3px;">blog.naver.com/<em>블로그ID</em></code> 주소가 다른 계정이라면,
-              아래 <strong>블로그 ID (선택)</strong> 필드에 실제 블로그 주소 ID를 입력하세요.
-              비워두면 로그인 후 자동 감지를 시도합니다.
-            </span>
-
-            <!-- 계정 추가 다이얼로그 목업 -->
-            <div style="margin-top:14px;display:flex;justify-content:center;">
-              <div style="background:#ffffff;border:1px solid #d0d0d0;border-radius:10px;width:340px;box-shadow:0 4px 18px rgba(0,0,0,0.13);overflow:hidden;font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;">
-                <!-- 타이틀바 -->
-                <div style="background:#f0f0f0;border-bottom:1px solid #ddd;padding:8px 14px;display:flex;align-items:center;gap:7px;">
-                  <div style="width:11px;height:11px;border-radius:50%;background:#ff5f57;"></div>
-                  <div style="width:11px;height:11px;border-radius:50%;background:#febc2e;"></div>
-                  <div style="width:11px;height:11px;border-radius:50%;background:#28c840;"></div>
-                  <span style="flex:1;text-align:center;font-size:12px;font-weight:600;color:#333;margin-right:38px;">계정 추가</span>
-                </div>
-                <!-- 폼 바디 -->
-                <div style="padding:18px 20px 14px;">
-                  <!-- 아이디 -->
-                  <div style="display:flex;align-items:center;margin-bottom:10px;">
-                    <label style="width:80px;font-size:12px;color:#555;flex-shrink:0;">아이디</label>
-                    <div style="flex:1;border:1px solid #e5e5e5;border-radius:6px;padding:6px 10px;font-size:12px;background:#fff;color:#1a1a1a;">myblog_login</div>
-                  </div>
-                  <!-- 비밀번호 -->
-                  <div style="display:flex;align-items:center;margin-bottom:10px;">
-                    <label style="width:80px;font-size:12px;color:#555;flex-shrink:0;">비밀번호</label>
-                    <div style="flex:1;border:1px solid #e5e5e5;border-radius:6px;padding:6px 10px;font-size:12px;background:#fff;color:#1a1a1a;letter-spacing:4px;">●●●●●●</div>
-                  </div>
-                  <!-- 블로그 ID (선택) — 강조 -->
-                  <div style="display:flex;align-items:center;margin-bottom:6px;">
-                    <label style="width:80px;font-size:12px;color:#555;flex-shrink:0;line-height:1.4;">블로그 ID<br><span style="font-size:10.5px;color:#999;">(선택)</span></label>
-                    <div style="flex:1;border:2px solid #f0a500;border-radius:6px;padding:6px 10px;font-size:12px;background:#fffdf0;color:#1a1a1a;position:relative;">
-                      my_actual_blog
-                      <span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:10px;background:#f0a500;color:#fff;padding:1px 6px;border-radius:3px;white-space:nowrap;">여기 입력</span>
-                    </div>
-                  </div>
-                  <div style="font-size:11px;color:#888;padding-left:80px;margin-bottom:14px;">※ 비워두면 네이버 아이디를 블로그 주소로 사용</div>
-                  <!-- 버튼 -->
-                  <div style="display:flex;justify-content:center;gap:10px;">
-                    <div style="background:#FFE812;color:#1a1a1a;font-size:12px;font-weight:700;padding:7px 28px;border-radius:7px;cursor:default;">추가</div>
-                    <div style="background:#e0e0e0;color:#444;font-size:12px;padding:7px 28px;border-radius:7px;cursor:default;">취소</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <p style="font-size:11.5px;color:#7a6000;margin-top:10px;text-align:center;">
-              예: 로그인 아이디 <code style="background:#fff3c0;padding:1px 4px;border-radius:3px;">myblog_login</code> / 블로그 주소 <code style="background:#fff3c0;padding:1px 4px;border-radius:3px;">blog.naver.com/my_actual_blog</code>
-            </p>
-          </div>
         </li>
         <li class="step">
           <div class="step-n">5</div>
@@ -625,6 +574,90 @@
           </div>
         </li>
       </ol>
+
+      <!-- ── 블로그 ID 안내 (steps 외부, 전체 너비) ── -->
+      <div style="background:var(--warn-bg);border:1px solid var(--warn-bd);border-radius:10px;padding:18px 20px;margin-top:16px;">
+        <div style="font-size:13.5px;font-weight:700;color:var(--warn-txt);margin-bottom:4px;">⚠ 블로그 주소가 로그인 아이디와 다른 경우</div>
+        <p style="font-size:12.5px;color:#5a4800;line-height:1.7;margin-bottom:16px;">
+          네이버는 로그인 아이디와 블로그 주소(URL)가 다를 수 있습니다.<br>
+          본인 블로그를 크롬에서 열었을 때 주소창을 확인하세요.
+        </p>
+
+        <!-- 브라우저 주소창 목업 -->
+        <div style="margin-bottom:16px;">
+          <div style="font-size:11.5px;color:#7a6000;margin-bottom:6px;font-weight:600;">예시 — 내 블로그 주소창</div>
+          <div style="background:#f0f0f0;border-radius:8px;padding:7px 12px;display:flex;align-items:center;gap:8px;font-family:monospace;max-width:400px;">
+            <span style="color:#888;font-size:13px;">←  →  ↺</span>
+            <div style="flex:1;background:#fff;border:1px solid #d0d0d0;border-radius:20px;padding:5px 14px;font-size:12.5px;color:#1a1a1a;display:flex;align-items:center;gap:6px;">
+              <span style="color:#999;font-size:11px;">🔒</span>
+              <span><strong style="color:#1558d6;">blog.naver.com</strong><span style="color:#333;">/newenglish_</span></span>
+            </div>
+          </div>
+          <div style="font-size:11.5px;color:#888;margin-top:5px;padding-left:4px;">주소창에 <code style="background:#fff3c0;padding:1px 4px;border-radius:3px;">blog.naver.com/</code> 뒤에 오는 부분이 <strong>블로그 ID</strong>입니다.</div>
+        </div>
+
+        <!-- 같은 경우 vs 다른 경우 비교 -->
+        <div style="font-size:11.5px;color:#7a6000;margin-bottom:8px;font-weight:600;">어떤 경우에 해당하나요?</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+          <!-- 같은 경우 -->
+          <div style="background:#f0faf4;border:1px solid #b7dfc5;border-radius:8px;padding:12px 14px;">
+            <div style="font-size:11px;font-weight:700;color:#1a7f3c;margin-bottom:8px;">✅ 입력 불필요 (자동 감지)</div>
+            <div style="font-size:11.5px;color:#333;line-height:1.9;">
+              로그인 아이디: <code style="background:#e8f5e9;padding:1px 5px;border-radius:3px;">newenglish_</code><br>
+              블로그 주소: <code style="background:#e8f5e9;padding:1px 5px;border-radius:3px;">newenglish_</code>
+            </div>
+            <div style="font-size:11px;color:#888;margin-top:6px;">두 값이 같으면 블로그 ID 비워도 됩니다.</div>
+          </div>
+          <!-- 다른 경우 -->
+          <div style="background:#fff8ec;border:2px solid #f0a500;border-radius:8px;padding:12px 14px;">
+            <div style="font-size:11px;font-weight:700;color:#c07000;margin-bottom:8px;">⚠ 블로그 ID 직접 입력 필요</div>
+            <div style="font-size:11.5px;color:#333;line-height:1.9;">
+              로그인 아이디: <code style="background:#fff3c0;padding:1px 5px;border-radius:3px;">abc1234@naver</code><br>
+              블로그 주소: <code style="background:#fff3c0;padding:1px 5px;border-radius:3px;">newenglish_</code>
+            </div>
+            <div style="font-size:11px;color:#888;margin-top:6px;">두 값이 다르면 아래 필드에 입력하세요.</div>
+          </div>
+        </div>
+
+        <!-- 계정 추가 다이얼로그 목업 -->
+        <div style="font-size:11.5px;color:#7a6000;margin-bottom:10px;font-weight:600;">계정 추가 화면에서 입력 위치</div>
+        <div style="background:#ffffff;border:1px solid #d0d0d0;border-radius:10px;box-shadow:0 3px 14px rgba(0,0,0,0.10);overflow:hidden;font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;">
+          <!-- 타이틀바 -->
+          <div style="background:#f0f0f0;border-bottom:1px solid #ddd;padding:8px 16px;display:flex;align-items:center;gap:7px;">
+            <div style="width:11px;height:11px;border-radius:50%;background:#ff5f57;"></div>
+            <div style="width:11px;height:11px;border-radius:50%;background:#febc2e;"></div>
+            <div style="width:11px;height:11px;border-radius:50%;background:#28c840;"></div>
+            <span style="flex:1;text-align:center;font-size:12.5px;font-weight:600;color:#333;margin-right:38px;">계정 추가</span>
+          </div>
+          <!-- 폼 바디 -->
+          <div style="padding:20px 28px 18px;">
+            <!-- 아이디 -->
+            <div style="display:flex;align-items:center;margin-bottom:12px;">
+              <label style="width:100px;font-size:12.5px;color:#555;flex-shrink:0;">아이디</label>
+              <div style="flex:1;border:1px solid #e5e5e5;border-radius:6px;padding:7px 12px;font-size:12.5px;background:#fff;color:#1a1a1a;">abc1234</div>
+            </div>
+            <!-- 비밀번호 -->
+            <div style="display:flex;align-items:center;margin-bottom:12px;">
+              <label style="width:100px;font-size:12.5px;color:#555;flex-shrink:0;">비밀번호</label>
+              <div style="flex:1;border:1px solid #e5e5e5;border-radius:6px;padding:7px 12px;font-size:12.5px;background:#fff;color:#1a1a1a;letter-spacing:5px;">●●●●●●</div>
+            </div>
+            <!-- 블로그 ID — 강조 -->
+            <div style="display:flex;align-items:center;margin-bottom:4px;">
+              <label style="width:100px;font-size:12.5px;color:#555;flex-shrink:0;line-height:1.5;">블로그 ID<br><span style="font-size:10.5px;color:#aaa;">(선택)</span></label>
+              <div style="flex:1;border:2px solid #f0a500;border-radius:6px;padding:7px 12px;font-size:12.5px;background:#fffdf0;color:#1a1a1a;display:flex;align-items:center;justify-content:space-between;">
+                <span>newenglish_</span>
+                <span style="font-size:10px;background:#f0a500;color:#fff;padding:2px 8px;border-radius:3px;white-space:nowrap;margin-left:8px;">← 여기에 블로그 주소 ID 입력</span>
+              </div>
+            </div>
+            <div style="font-size:11.5px;color:#999;padding-left:100px;margin-bottom:18px;">※ 비워두면 네이버 아이디를 블로그 주소로 사용</div>
+            <!-- 버튼 -->
+            <div style="display:flex;justify-content:center;gap:10px;">
+              <div style="background:#FFE812;color:#1a1a1a;font-size:12.5px;font-weight:700;padding:8px 36px;border-radius:7px;">추가</div>
+              <div style="background:#e0e0e0;color:#444;font-size:12.5px;padding:8px 36px;border-radius:7px;">취소</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- 탭 2: AI 글 생성 -->
