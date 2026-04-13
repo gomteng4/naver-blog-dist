@@ -78,7 +78,7 @@
       margin-bottom: 16px;
     }
     .card-title {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
@@ -163,9 +163,9 @@
       border: none;
       border-bottom: 2px solid transparent;
       color: var(--muted);
-      font-size: 12.5px;
+      font-size: 14px;
       font-weight: 600;
-      padding: 10px 6px 9px;
+      padding: 11px 6px 10px;
       cursor: pointer;
       transition: color .15s, border-color .15s, background .15s;
       font-family: inherit;
@@ -213,15 +213,15 @@
       color: var(--accent-dark);
       margin-top: 2px;
     }
-    .step-body strong { display: block; font-size: 13.5px; margin-bottom: 3px; color: var(--text); }
-    .step-body span { font-size: 13px; color: var(--muted); line-height: 1.65; }
+    .step-body strong { display: block; font-size: 15px; margin-bottom: 4px; color: var(--text); }
+    .step-body span { font-size: 14px; color: var(--muted); line-height: 1.7; }
     code {
       background: var(--card);
       border: 1px solid var(--border2);
       border-radius: 4px;
       padding: 1px 6px;
       font-family: Consolas, monospace;
-      font-size: 12px;
+      font-size: 13px;
       color: #b86000;
     }
 
@@ -230,11 +230,11 @@
       background: #fafafa;
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 13px 16px;
+      padding: 14px 18px;
       font-family: Consolas, monospace;
-      font-size: 12.5px;
+      font-size: 13.5px;
       color: #444;
-      line-height: 1.9;
+      line-height: 2;
       margin: 10px 0;
     }
     .folder-tree .dir { color: var(--blue); font-weight: 600; }
@@ -255,15 +255,15 @@
       padding: 14px 16px;
     }
     .mode-card .mode-label {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--accent-dark);
       margin-bottom: 5px;
     }
-    .mode-card .mode-title { font-size: 13.5px; font-weight: 700; margin-bottom: 5px; color: var(--text); }
-    .mode-card .mode-desc { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+    .mode-card .mode-title { font-size: 15px; font-weight: 700; margin-bottom: 5px; color: var(--text); }
+    .mode-card .mode-desc { font-size: 13.5px; color: var(--muted); line-height: 1.65; }
     .mode-card.full { grid-column: 1 / -1; }
 
     /* ── Grid 시각 다이어그램 ── */
@@ -435,17 +435,17 @@
       background: var(--green-bg);
       border: 1px solid var(--green-bd);
       border-radius: 8px;
-      padding: 12px 16px;
-      font-size: 12.5px;
+      padding: 13px 18px;
+      font-size: 13.5px;
       color: #1a5c30;
-      line-height: 1.7;
+      line-height: 1.75;
       margin: 12px 0 4px;
     }
     .tip-box strong { color: var(--green); }
 
     /* ── 섹션 구분 ── */
     .section-divider {
-      font-size: 11px;
+      font-size: 12.5px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
@@ -852,51 +852,6 @@
     </div>
   </div>
 
-  <!-- 시스템 요구사항 -->
-  <div class="card">
-    <div class="card-title">시스템 요구사항</div>
-    <div class="spec-grid">
-      <div class="spec-item">
-        <div class="spec-label">운영체제</div>
-        <div class="spec-value">Windows 10 / 11</div>
-      </div>
-      <div class="spec-item">
-        <div class="spec-label">브라우저</div>
-        <div class="spec-value">Chrome (최신 버전)</div>
-      </div>
-      <div class="spec-item">
-        <div class="spec-label">인터넷</div>
-        <div class="spec-value">상시 연결 필요</div>
-      </div>
-      <div class="spec-item">
-        <div class="spec-label">라이선스</div>
-        <div class="spec-value">키 발급 필요</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 업데이트 내역 -->
-  <div class="card">
-    <div class="card-title">업데이트 내역</div>
-    <ul class="log-list">
-      <li class="log-item"><span class="log-ver">v1.4.2</span><span class="log-desc">버그 수정 및 안정성 개선</span></li>
-      <li class="log-item"><span class="log-ver">v1.4.0</span><span class="log-desc">이미지 재사용 모드 추가 — 이미지풀 + 배경 합성</span></li>
-      <li class="log-item"><span class="log-ver">v1.3.7</span><span class="log-desc">이미지 개별 생성 모드 추가 / 볼드 서식 버그 수정</span></li>
-      <li class="log-item"><span class="log-ver">v1.3.3</span><span class="log-desc">보안 프로그램 호환성 개선 / 업데이트 방식 변경</span></li>
-    </ul>
-  </div>
-
-  <!-- 주의사항 -->
-  <div class="warn-box">
-    <strong>이용 안내</strong> — 라이선스 키가 있는 사용자만 이용할 수 있습니다.
-    키는 1대의 기기에만 등록되며, 다른 기기에서 사용 시 자동으로 차단됩니다.
-    무단 공유 및 재배포를 금지합니다.
-  </div>
-
-  <!-- 문의 -->
-  <div class="contact-box">
-    <p>라이선스 키 발급 및 사용 문의는<br><strong>카카오톡 오픈채팅</strong>으로 연락 주세요.</p>
-  </div>
 
 </div>
 
