@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>네이버 블로그 자동 포스팅 프로그램</title>
+  <meta name="description" content="네이버 블로그 자동 포스팅 프로그램 다운로드 및 설치 안내" />
+  <!-- Open Graph (카카오 공유 시 미리보기) -->
+  <meta property="og:title" content="네이버 블로그 자동 포스팅 프로그램" />
+  <meta property="og:description" content="MD 파일 작성 후 버튼 하나로 네이버 블로그 자동 포스팅" />
+  <meta property="og:type" content="website" />
+  <style>
+    :root {
+      --bg:      #0f0f0f;
+      --surface: #1a1a1a;
+      --card:    #161616;
+      --border:  #262626;
+      --accent:  #FFE812;
+      --accent2: #F0D800;
+      --text:    #efefef;
+      --muted:   #7a7a7a;
+      --green:   #4ade80;
+      --radius:  14px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 56px 20px 88px;
+    }
+    .container { width: 100%; max-width: 660px; }
+
+    /* ── 헤더 ── */
+    .header { text-align: center; margin-bottom: 52px; }
+    .header .pill {
+      display: inline-block;
+      background: var(--accent);
+      color: #111;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    .header h1 {
+      font-size: clamp(24px, 5.5vw, 36px);
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      line-height: 1.3;
+      margin-bottom: 14px;
+    }
+    .header h1 em { color: var(--accent); font-style: normal; }
+    .header p { color: var(--muted); font-size: 14.5px; line-height: 1.75; }
+
+    /* ── 카드 공통 ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 28px 26px;
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    /* ── 다운로드 카드 ── */
+    .dl-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    .ver-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .ver-tag {
+      background: #1e1e1e;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-family: monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .new-tag {
+      background: #0d2b1a;
+      border: 1px solid #1a5c35;
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--green);
+    }
+    .dl-card h2 { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+    .dl-card p { color: var(--muted); font-size: 13.5px; line-height: 1.65; margin-bottom: 22px; }
+    .btn-dl {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #111;
+      font-weight: 800;
+      font-size: 15px;
+      padding: 13px 30px;
+      border-radius: 10px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background .15s, transform .1s;
+    }
+    .btn-dl:hover { background: var(--accent2); transform: translateY(-1px); }
+    .btn-dl:active { transform: translateY(0); }
+    .file-note {
+      display: inline-block;
+      margin-left: 12px;
+      color: var(--muted);
+      font-size: 12.5px;
+      vertical-align: middle;
+    }
+
+    /* ── 스텝 리스트 ── */
+    .steps { list-style: none; }
+    .step {
+      display: flex;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .step:last-child { border-bottom: none; padding-bottom: 0; }
+    .step-n {
+      flex-shrink: 0;
+      width: 26px; height: 26px;
+      background: #1f1f1f;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-top: 2px;
+    }
+    .step-body strong { display: block; font-size: 13.5px; margin-bottom: 3px; }
+    .step-body span { font-size: 13px; color: var(--muted); line-height: 1.65; }
+    code {
+      background: #1f1f1f;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-family: Consolas, monospace;
+      font-size: 12px;
+      color: #d4b44a;
+    }
+
+    /* ── 스펙 그리드 ── */
+    .spec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .spec-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 13px 15px;
+    }
+    .spec-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 5px; }
+    .spec-value { font-size: 14px; font-weight: 600; }
+
+    /* ── 업데이트 로그 ── */
+    .log-list { list-style: none; }
+    .log-item {
+      display: flex;
+      gap: 10px;
+      padding: 7px 0;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border);
+    }
+    .log-item:last-child { border-bottom: none; }
+    .log-ver {
+      flex-shrink: 0;
+      font-family: monospace;
+      font-size: 12px;
+      color: var(--accent);
+      width: 52px;
+      margin-top: 1px;
+    }
+    .log-desc { color: #c0c0c0; line-height: 1.5; }
+
+    /* ── 경고 박스 ── */
+    .warn-box {
+      background: #191300;
+      border: 1px solid #3a2c00;
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      font-size: 13px;
+      color: #c9a500;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .warn-box strong { color: var(--accent); }
+
+    /* ── 문의 ── */
+    .contact-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 28px;
+      text-align: center;
+    }
+    .contact-box p { font-size: 13.5px; color: var(--muted); line-height: 1.7; }
+    .contact-box strong { color: var(--text); }
+
+    footer {
+      margin-top: 52px;
+      text-align: center;
+      color: #3a3a3a;
+      font-size: 12px;
+    }
+
+    @media (max-width: 480px) {
+      .spec-grid { grid-template-columns: 1fr; }
+      .btn-dl { width: 100%; justify-content: center; }
+      .file-note { display: block; margin: 10px 0 0; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- 헤더 -->
+  <header class="header">
+    <div class="pill">Windows 전용 · 라이선스 필요</div>
+    <h1>네이버 블로그<br><em>자동 포스팅 프로그램</em></h1>
+    <p>콘텐츠 파일 작성 후 버튼 한 번으로<br>네이버 블로그에 자동 포스팅합니다.</p>
+  </header>
+
+  <!-- 다운로드 -->
+  <div class="dl-card">
+    <div class="ver-row">
+      <span class="ver-tag" id="ver-badge">확인 중…</span>
+      <span class="new-tag">최신 버전</span>
+    </div>
+    <h2>프로그램 다운로드</h2>
+    <p>zip 파일을 받아 압축을 풀면 바로 실행할 수 있습니다.<br>별도의 설치 과정이 필요하지 않습니다.</p>
+    <a class="btn-dl" id="dl-btn" href="#">
+      ⬇&nbsp; 최신 버전 다운로드
+    </a>
+    <span class="file-note" id="file-size">약 40 MB</span>
+  </div>
+
+  <!-- 설치 방법 -->
+  <div class="card">
+    <div class="card-title">설치 및 실행 방법</div>
+    <ol class="steps">
+      <li class="step">
+        <div class="step-n">1</div>
+        <div class="step-body">
+          <strong>zip 파일 다운로드</strong>
+          <span>위 버튼을 눌러 파일을 저장합니다.</span>
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-n">2</div>
+        <div class="step-body">
+          <strong>압축 해제</strong>
+          <span>원하는 폴더에 압축을 풀면 프로그램 폴더가 생성됩니다.</span>
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-n">3</div>
+        <div class="step-body">
+          <strong>실행</strong>
+          <span><code>naver-blog.exe</code>를 더블클릭합니다.<br>
+          Windows 보안 경고가 표시될 경우 <strong>자세히 → 실행</strong>을 선택하세요.</span>
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-n">4</div>
+        <div class="step-body">
+          <strong>라이선스 키 입력</strong>
+          <span>발급받은 라이선스 키를 입력하면 준비가 완료됩니다.</span>
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-n">5</div>
+        <div class="step-body">
+          <strong>업데이트</strong>
+          <span>새 버전이 있으면 실행 시 자동으로 알림이 표시됩니다.<br>업데이트 버튼 클릭 한 번으로 최신 버전으로 교체됩니다.</span>
+        </div>
+      </li>
+    </ol>
+  </div>
+
+  <!-- 시스템 요구사항 -->
+  <div class="card">
+    <div class="card-title">시스템 요구사항</div>
+    <div class="spec-grid">
+      <div class="spec-item">
+        <div class="spec-label">운영체제</div>
+        <div class="spec-value">Windows 10 / 11</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">브라우저</div>
+        <div class="spec-value">Chrome (최신 버전)</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">인터넷</div>
+        <div class="spec-value">상시 연결 필요</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">라이선스</div>
+        <div class="spec-value">키 발급 필요</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 업데이트 내역 -->
+  <div class="card">
+    <div class="card-title">업데이트 내역</div>
+    <ul class="log-list">
+      <li class="log-item"><span class="log-ver">v1.4.2</span><span class="log-desc">버그 수정 및 안정성 개선</span></li>
+      <li class="log-item"><span class="log-ver">v1.4.0</span><span class="log-desc">이미지 재사용 모드 추가 — 이미지풀 + 배경 합성</span></li>
+      <li class="log-item"><span class="log-ver">v1.3.7</span><span class="log-desc">이미지 개별 생성 모드 추가 / 볼드 서식 버그 수정</span></li>
+      <li class="log-item"><span class="log-ver">v1.3.3</span><span class="log-desc">보안 프로그램 호환성 개선 / 업데이트 방식 변경</span></li>
+    </ul>
+  </div>
+
+  <!-- 주의사항 -->
+  <div class="warn-box">
+    <strong>이용 안내</strong> — 라이선스 키가 있는 사용자만 이용할 수 있습니다.
+    키는 1대의 기기에만 등록되며, 다른 기기에서 사용 시 자동으로 차단됩니다.
+    무단 공유 및 재배포를 금지합니다.
+  </div>
+
+  <!-- 문의 -->
+  <div class="contact-box">
+    <p>라이선스 키 발급 및 사용 문의는<br><strong>카카오톡 오픈채팅</strong>으로 연락 주세요.</p>
+  </div>
+
+</div>
+
+<footer>© 2026 Naver Blog Auto Poster</footer>
+
+<script>
+  // 최신 릴리즈 버전·다운로드 URL 자동 반영
+  (async () => {
+    try {
+      const r = await fetch('/_api/latest.json').catch(() => null);
+      // /_api/latest.json 없으면 GitHub API 직접 사용
+      const data = r?.ok
+        ? await r.json()
+        : await fetch('https://api.github.com/repos/gomteng4/naver-blog-dist/releases/latest',
+            { headers: { Accept: 'application/vnd.github+json' } }
+          ).then(x => x.json());
+
+      const tag = data.tag_name || data.version;
+      const asset = data.assets?.find(a => a.name === 'naver-blog.zip');
+      const url = asset?.browser_download_url || data.download_url;
+      const sizeMB = asset ? (asset.size / 1024 / 1024).toFixed(0) : '40';
+
+      if (tag) document.getElementById('ver-badge').textContent = tag;
+      if (url) {
+        const btn = document.getElementById('dl-btn');
+        btn.href = url;
+        btn.textContent = '⬇  최신 버전 다운로드';
+      }
+      if (sizeMB) document.getElementById('file-size').textContent = `약 ${sizeMB} MB`;
+    } catch (_) {
+      document.getElementById('ver-badge').textContent = 'v1.4.2';
+      document.getElementById('dl-btn').href =
+        'https://github.com/gomteng4/naver-blog-dist/releases/latest/download/naver-blog.zip';
+    }
+  })();
+</script>
+</body>
+</html>
