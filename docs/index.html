@@ -673,18 +673,35 @@
       <div class="folder-tree">
         <span class="dir">콘텐츠/{아이디}/</span><br>
         &nbsp;&nbsp;└── <span class="dir">prompt/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">직접 만드세요</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">guide.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">브랜드 정보 + 금지사항 ← 필수</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">guide.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">브랜드 정보 + 금지사항 ← 필수 (계정 추가 시 템플릿 자동 복사)</span><br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">titles.txt</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">제목 목록 (한 줄에 하나) ← 필수</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">section_config.json</span>&nbsp;<span class="note">섹션 순서·On/Off ← 프로그램 UI에서 자동 저장</span><br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">image_guide.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">이미지 프롬프트 추가 지침 (선택)</span><br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">used_titles.json</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">자동 생성 — 사용된 제목 기록</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="dir">styles/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">글 스타일 폴더 ← 계정 추가 시 자동 생성</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="dir">styles/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">글 섹션별 스타일 폴더 ← 계정 추가 시 자동 생성</span><br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">도입부/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">공감형.md, 질문형.md, 상황제시형.md</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">개념_장점/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">개념설명형.md, 장점나열형.md</span><br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">요금제/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">표형식.md, 리스트형식.md</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">개통순서/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">단계별.md, 스크린샷형.md</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">전체구조/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">QA형식.md, 비교분석형.md</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">유심_인증서/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">상세안내형.md, 간략형.md</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">문체/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">친근한.md, 전문적.md, 간결한.md</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="dir">섹션포맷/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">표위주.md, 리스트위주.md, 혼합형.md</span>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">유심가이드/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">일반안내형.md</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">인증서가이드/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">일반안내형.md, 표형식.md</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">개통절차/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">단계별.md, 간략형.md</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="dir">마무리/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">요약형.md, 질문유도형.md</span>
+      </div>
+
+      <div class="section-divider">새 기능 — 섹션 구성 + 문체 선택</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+        <div class="spec-card">
+          <div class="spec-title">📋 섹션 구성 UI</div>
+          <div class="spec-desc">사이드바 <strong>📋 섹션</strong> 버튼 → 섹션 On/Off 및 ↑↓ 순서 변경.<br>작업 저장 시 현재 섹션 구성이 함께 저장됩니다.</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-title">✏️ 문체 선택</div>
+          <div class="spec-desc">사이드바 문체 드롭다운에서 <strong>랜덤 / 친근한 / 전문적 / 간결한</strong> 선택.<br>작업셋트마다 다른 문체 저장 가능.</div>
+        </div>
+      </div>
+      <div style="padding:12px 16px;background:var(--blue-bg);border:1px solid var(--blue-bd);border-radius:10px;font-size:14px;color:var(--blue);line-height:1.7;margin-bottom:18px;">
+        💡 <strong>styles/ 폴더 커스터마이징</strong>: 각 섹션 폴더에 .md 파일을 추가하면 글 생성 시 랜덤 선택됩니다.<br>
+        새 폴더를 추가하면 새 섹션으로 자동 인식됩니다. 📋 섹션 버튼에서 활성화하세요.
       </div>
 
       <div class="section-divider">titles.txt 예시</div>
@@ -739,8 +756,9 @@
         </li>
       </ol>
       <div class="tip-box">
-        <strong>guide.md 준비</strong> — 아래 <em>자료 다운로드</em>에서 <em>글작성_지침_템플릿.md</em>를 받아
-        브랜드 정보 섹션만 수정하면 바로 <code>guide.md</code>로 사용할 수 있습니다.
+        <strong>guide.md 준비</strong> — 계정을 처음 추가하면 <code>guide_template.md</code>가 <code>guide.md</code>로 자동 복사됩니다.<br>
+        메모장으로 열어 <strong>서비스명, URL, 요금제 정보, 금지사항</strong>만 채우면 완성입니다.<br>
+        포맷/구조 지시는 넣지 마세요 — 섹션 스타일(styles/)이 담당합니다.
       </div>
     </div>
 
