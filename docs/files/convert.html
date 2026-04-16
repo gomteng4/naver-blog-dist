@@ -757,7 +757,7 @@ async function generateTemplate() {
         body: JSON.stringify({
           system_instruction: { parts: [{ text: MAKER_SYSTEM }] },
           contents: [{ parts: [{ text: userMsg }] }],
-          generationConfig: { temperature: 0.7, maxOutputTokens: 512 }
+          generationConfig: { temperature: 0.7, maxOutputTokens: 2048 }
         })
       }
     );
