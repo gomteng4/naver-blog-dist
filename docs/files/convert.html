@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>네이버 블로그 도구</title>
+<style>
+  /* Python fix_body()와 동기화 필요 — JS fixBody() 규칙 변경 시 Python도 함께 수정 */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Malgun Gothic', sans-serif; background: #f4f4f6; color: #222; }
+
+  /* ── 상단 탭 네비 ── */
+  .top-nav { background: #1a1a2e; display: flex; align-items: center; gap: 0; }
+  .top-nav .brand { color: #fff; font-size: 15px; font-weight: bold; padding: 0 20px; line-height: 52px; white-space: nowrap; }
+  .top-nav .tab-btn {
+    color: #aaa; font-size: 13px; padding: 0 22px; line-height: 52px;
+    cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.15s;
+    user-select: none;
+  }
+  .top-nav .tab-btn:hover { color: #fff; background: rgba(255,255,255,0.06); }
+  .top-nav .tab-btn.active { color: #f5c518; border-bottom-color: #f5c518; }
+
+  /* ── 페이지 ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ══ MD 변환기 ══ */
+  .convert-wrap { display: flex; flex-direction: column; height: calc(100vh - 52px); }
+  .convert-body { display: flex; gap: 16px; padding: 16px; flex: 1; min-height: 0; }
+  .pane { flex: 1; display: flex; flex-direction: column; gap: 8px; min-height: 0; }
+  .pane label { font-size: 12px; font-weight: bold; color: #555; text-transform: uppercase; letter-spacing: 0.5px; }
+  textarea {
+    flex: 1; border: 1px solid #ccc; border-radius: 8px; padding: 12px;
+    font-family: 'Consolas', 'D2Coding', monospace; font-size: 13px;
+    line-height: 1.6; resize: none; background: #fff; color: #222;
+    outline: none; transition: border-color 0.2s; min-height: 0;
+  }
+  textarea:focus { border-color: #f5c518; }
+  textarea[readonly] { background: #f9f9f9; cursor: default; }
+  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  button {
+    padding: 8px 18px; border: none; border-radius: 6px; font-size: 13px;
+    cursor: pointer; font-family: inherit; transition: background 0.15s;
+  }
+  .btn-primary { background: #f5c518; color: #222; font-weight: bold; }
+  .btn-primary:hover { background: #e6b800; }
+  .btn-gray { background: #e0e0e0; color: #333; }
+  .btn-gray:hover { background: #ccc; }
+  .btn-success { background: #2e9e5b; color: #fff; }
+  .btn-success:hover { background: #237a46; }
+  .log-panel {
+    background: #1e1e2e; color: #cdd6f4; border-radius: 8px; padding: 12px;
+    font-family: 'Consolas', monospace; font-size: 12px; line-height: 1.6;
+    min-height: 72px; max-height: 120px; overflow-y: auto;
+  }
+  .log-panel .log-item { padding: 1px 0; border-bottom: 1px solid #2a2a3e; }
+  .log-panel .log-item:last-child { border: none; }
+  .log-panel .cnt { color: #a6e3a1; }
+  .log-panel .no-change { color: #89b4fa; }
+  .log-panel .empty { color: #6c7086; }
+  .divider-v { width: 2px; background: #e0e0e0; border-radius: 2px; align-self: stretch; margin: 24px 0; }
+  .log-area { padding: 0 16px 12px; }
+  .log-area > label { font-size: 12px; font-weight: bold; color: #555; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* ══ 섹션 가이드 ══ */
+  .guide-wrap { display: flex; height: calc(100vh - 52px); }
+
+  /* 왼쪽 섹션 목록 */
+  .guide-sidebar {
+    width: 180px; min-width: 180px; background: #1a1a2e; color: #ccc;
+    display: flex; flex-direction: column; overflow-y: auto;
+  }
+  .guide-sidebar .sec-label {
+    font-size: 10px; color: #666; padding: 14px 16px 4px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .guide-sidebar .sec-btn {
+    padding: 10px 16px; cursor: pointer; font-size: 13px; color: #bbb;
+    border-left: 3px solid transparent; transition: all 0.12s; user-select: none;
+  }
+  .guide-sidebar .sec-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
+  .guide-sidebar .sec-btn.active { color: #f5c518; border-left-color: #f5c518; background: rgba(245,197,24,0.07); }
+
+  /* 오른쪽 콘텐츠 */
+  .guide-content { flex: 1; overflow-y: auto; padding: 24px 28px; }
+  .guide-section { display: none; }
+  .guide-section.active { display: block; }
+
+  .guide-section h2 { font-size: 18px; color: #1a1a2e; margin-bottom: 4px; }
+  .guide-section .sec-sub { font-size: 12px; color: #888; margin-bottom: 20px; }
+
+  .guide-card {
+    background: #fff; border-radius: 10px; border: 1px solid #e0e0e0;
+    margin-bottom: 16px; overflow: hidden;
+  }
+  .guide-card .card-head {
+    background: #f9f9f9; padding: 10px 16px; border-bottom: 1px solid #eee;
+    font-size: 12px; font-weight: bold; color: #555;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .guide-card .card-head .badge {
+    display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 11px; font-weight: bold;
+  }
+  .badge-guide { background: #e8f4fd; color: #1976d2; }
+  .badge-template { background: #e8f7ee; color: #2e7d32; }
+  .badge-ai { background: #fff3e0; color: #e65100; }
+  .guide-card .card-body { padding: 14px 16px; font-size: 13px; line-height: 1.75; color: #333; white-space: pre-wrap; }
+
+  .template-block { border-left: 3px solid #2e9e5b; padding: 10px 14px; background: #f6fbf8;
+                    border-radius: 0 6px 6px 0; font-size: 13px; line-height: 1.75; white-space: pre-wrap; }
+  .template-name { font-size: 11px; font-weight: bold; color: #2e9e5b; margin-bottom: 6px; }
+  .template-sep { height: 1px; background: #e0e0e0; margin: 12px 0; }
+
+  /* ══ 스타일 템플릿 만들기 ══ */
+  .maker-wrap { max-width: 860px; margin: 0 auto; padding: 28px 24px; }
+  .maker-wrap h1 { font-size: 20px; color: #1a1a2e; margin-bottom: 6px; }
+  .maker-wrap .maker-sub { font-size: 13px; color: #888; margin-bottom: 28px; line-height: 1.6; }
+  .maker-row { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 18px; flex-wrap: wrap; }
+  .maker-row label { font-size: 12px; font-weight: bold; color: #555; display: block; margin-bottom: 6px; }
+  .maker-row select, .maker-row input[type=text] {
+    padding: 8px 12px; border: 1px solid #ccc; border-radius: 7px;
+    font-size: 13px; font-family: inherit; outline: none; background: #fff;
+    transition: border-color 0.15s;
+  }
+  .maker-row select:focus, .maker-row input[type=text]:focus { border-color: #f5c518; }
+  .maker-row select { min-width: 140px; }
+  .maker-row input[type=text] { flex: 1; min-width: 220px; }
+  .maker-field { width: 100%; }
+  .maker-field label { font-size: 12px; font-weight: bold; color: #555; display: block; margin-bottom: 6px; }
+  .maker-field textarea {
+    width: 100%; border: 1px solid #ccc; border-radius: 8px; padding: 12px;
+    font-family: 'Consolas', 'D2Coding', monospace; font-size: 13px;
+    line-height: 1.7; resize: vertical; background: #fff; outline: none;
+    transition: border-color 0.15s;
+  }
+  .maker-field textarea:focus { border-color: #f5c518; }
+  .maker-field textarea[readonly] { background: #f9f9f9; cursor: default; }
+  .maker-result-wrap { margin-top: 20px; }
+  .maker-result-label { font-size: 12px; font-weight: bold; color: #555; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
+  .maker-hint {
+    background: #fff8e1; border: 1px solid #f5c518; border-radius: 8px;
+    padding: 12px 16px; font-size: 12px; color: #555; line-height: 1.65; margin-top: 14px;
+  }
+  .maker-hint strong { color: #b07800; }
+  .maker-hint code { background: #f0f0f0; padding: 1px 5px; border-radius: 4px; font-family: monospace; }
+  .maker-loading { display: none; color: #888; font-size: 13px; padding: 8px 0; }
+  .maker-loading.visible { display: block; }
+  .maker-error { display: none; color: #c0392b; font-size: 13px; padding: 8px 0; }
+  .maker-error.visible { display: block; }
+  .rules-panel {
+    background: #1e1e2e; color: #cdd6f4; border-radius: 8px; padding: 14px 18px;
+    font-size: 12px; font-family: 'Consolas', monospace; line-height: 1.8;
+    margin-bottom: 18px;
+  }
+  .rules-panel .r-head { color: #f5c518; font-weight: bold; margin-bottom: 8px; font-family: 'Malgun Gothic', sans-serif; }
+  .rules-panel .r { color: #a6e3a1; }
+  .rules-panel .r span { color: #89b4fa; }
+</style>
+</head>
+<body>
+
+<!-- ── 상단 네비 ── -->
+<div class="top-nav">
+  <div class="brand">📝 블로그 도구</div>
+  <div class="tab-btn active" onclick="showPage('convert', this)">MD 변환기</div>
+  <div class="tab-btn" onclick="showPage('guide', this)">섹션 스타일 가이드</div>
+  <div class="tab-btn" onclick="showPage('maker', this)">✨ 템플릿 만들기</div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- 페이지 1: MD 변환기                    -->
+<!-- ══════════════════════════════════════ -->
+<div id="page-convert" class="page active">
+<div class="convert-wrap">
+  <div class="convert-body">
+    <div class="pane">
+      <label>입력 (AI 생성 MD / 자유 텍스트)</label>
+      <textarea id="input" placeholder="여기에 AI(Claude/Gemini)가 만든 MD를 붙여넣으세요.&#10;&#10;자동 교정 규칙:&#10;• [이미지 N] → > [이미지 N]&#10;• HTML 태그 → MD&#10;• 단독 - → ---&#10;• 이중헤딩, 빈불릿 등 자동 교정&#10;&#10;Ctrl+Enter 로 빠르게 변환"></textarea>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="convert()">▶ 변환하기</button>
+        <button class="btn-gray" onclick="clearAll()">✕ 초기화</button>
+      </div>
+    </div>
+
+    <div class="divider-v"></div>
+
+    <div class="pane">
+      <label>변환 결과</label>
+      <textarea id="output" readonly placeholder="변환 결과가 여기에 표시됩니다."></textarea>
+      <div class="btn-row">
+        <button class="btn-success" onclick="copyResult()">📋 복사</button>
+        <button class="btn-primary" onclick="downloadMd()">⬇ .md 다운로드</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="log-area">
+    <label>변경 로그</label>
+    <div class="log-panel" id="log"><span class="empty">변환 결과가 여기에 표시됩니다.</span></div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- 페이지 2: 섹션 스타일 가이드           -->
+<!-- ══════════════════════════════════════ -->
+<div id="page-guide" class="page">
+<div class="guide-wrap">
+
+  <!-- 왼쪽 섹션 목록 -->
+  <div class="guide-sidebar">
+    <div class="sec-label">섹션 목록</div>
+    <div class="sec-btn active" onclick="showSection('도입부', this)">도입부</div>
+    <div class="sec-btn" onclick="showSection('개념_장점', this)">개념_장점</div>
+    <div class="sec-btn" onclick="showSection('요금제', this)">요금제</div>
+    <div class="sec-btn" onclick="showSection('유심가이드', this)">유심가이드</div>
+    <div class="sec-btn" onclick="showSection('인증서가이드', this)">인증서가이드</div>
+    <div class="sec-btn" onclick="showSection('개통절차', this)">개통절차</div>
+    <div class="sec-btn" onclick="showSection('마무리', this)">마무리</div>
+  </div>
+
+  <!-- 오른쪽 콘텐츠 -->
+  <div class="guide-content">
+
+    <!-- ── 도입부 ── -->
+    <div id="guide-도입부" class="guide-section active">
+      <h2>도입부</h2>
+      <div class="sec-sub">글의 첫 번째 섹션 — 독자를 글로 끌어들이는 역할</div>
+
+      <div class="guide-card">
+        <div class="card-head"><span class="badge badge-guide">사용 가이드</span> 이 폴더가 하는 일</div>
+        <div class="card-body">이 폴더에 있는 파일들은 AI가 글의 첫 번째 섹션(독자를 글로 끌어들이는 도입부)을
+어떤 방식으로 쓸지 결정합니다.
+
+파일이 여러 개 있으면, 글을 생성할 때마다 그 중 하나를 자동으로 골라서 사용합니다.
+즉, 파일이 많을수록 글의 도입부가 다양하게 나옵니다.
+
+📌 파일 수정: 메모장으로 .md 파일 열기 → 수정 → UTF-8로 저장
+📌 새 파일: 메모장에 내용 작성 → "파일명.md"로 이 폴더에 저장 (인코딩: UTF-8)
+📌 이 가이드 내용은 AI에게 전달되지 않습니다.</div>
+      </div>
+
+      <div class="guide-card">
+        <div class="card-head"><span class="badge badge-template">스타일 템플릿</span> 현재 등록된 스타일 (랜덤 선택)</div>
+        <div class="card-body">
+          <div class="template-name">📄 공감형.md</div>
+          <div class="template-block">글의 첫 번째 섹션(도입부)은 독자가 겪고 있는 불편한 상황을 먼저 공감하는 방식으로 시작하세요.
+독자가 느끼는 답답함, 걱정, 불안감을 2~3문장으로 표현한 뒤, 이 글이 그 문제를 해결해 준다는 흐름으로 자연스럽게 이어지게 작성하세요.
+예) "갑자기 수발신이 막혀 당황하셨나요?", "미납 때문에 개통이 거절될까 봐 걱정되셨나요?" 같은 공감 표현을 활용하세요.</div>
+          <div class="template-sep"></div>
+          <div class="template-name">📄 상황제시형.md</div>
+          <div class="template-block">글의 첫 번째 섹션(도입부)은 독자가 실제로 처할 수 있는 구체적인 상황을 묘사하는 방식으로 시작하세요.
+"갑자기 전화가 안 터졌을 때", "배달 주문 중 결제가 막혔을 때"처럼 실생활 상황을 생생하게 묘사한 뒤, 이 글의 해결책으로 자연스럽게 연결하세요.
+독자가 "맞아 나 이런 상황이었어"라고 느낄 수 있도록 구체적인 장면을 짧게 묘사하는 것이 핵심입니다.</div>
+          <div class="template-sep"></div>
+          <div class="template-name">📄 질문형.md</div>
+          <div class="template-block">글의 첫 번째 섹션(도입부)은 독자가 궁금해하는 핵심 질문을 던지는 방식으로 시작하세요.
+질문 1~2개로 독자의 관심을 끌고, 이 글에서 그 답을 알 수 있다는 기대감을 주는 흐름으로 작성하세요.
+예) "SKT 미납 상태에서도 선불폰 개통이 가능할까요?", "편의점에서 유심을 사면 바로 개통이 되나요?" 같은 직접적인 질문으로 시작하세요.</div>
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <div class="card-head"><span class="badge badge-ai">AI 동작 방식</span></div>
+        <div class="card-body">글 생성 시 이 폴더의 .md 파일 중 하나를 랜덤으로 선택하여 AI 프롬프트에 주입합니다.
+파일을 추가할수록 도입부 스타일이 다양해집니다.
+파일이 없으면 이 섹션에 대한 스타일 지시가 없으므로 AI가 자유롭게 작성합니다.</div>
+      </div>
+    </div>
+
+    <!-- ── 개념_장점 ── -->
+    <div id="guide-개념_장점" class="guide-section">
+      <h2>개념_장점</h2>
+      <div class="sec-sub">선불폰/선불유심 개념 소개 및 장점 나열 섹션</div>
+
+      <div class="guide-card">
+        <div class="card-head"><span class="badge badge-guide">사용 가이드</span> 이 폴더가 하는 일</div>
+        <div class="card-body">이 폴더의 파일들은 AI가 선불폰/선불유심 개념 설명 및 장점 소개 섹션을 어떤 방식으로 작성할지 결정합니다.
+파일이 여러 개면 글 생성마다 하나를 랜덤으로 선택합니다.
+
+📌 파일 수정: 메모장으로 .md 파일 열기 → 수정 → UTF-8로 저장
+📌 새 파일: 메모장에 내용 작성 → "파일명.md"로 이 폴더에 저장 (인코딩: UTF-8)
+📌 이 가이드 내용은 AI에게 전달되지 않습니다.</div>
+      </div>
+
+      <div class="guide-card">
+        <div class="card-head"><span class="badge badge-template">스타일 템플릿</span> 현재 등록된 스타일 (랜덤 선택)</div>
+        <div class="card-body">
+          <div class="template-name">📄 개념설명형.md</div>
+          <div class="template-block">이 섹션에서는 선불폰 또는 선불유심이 무엇인지 개념부터 설명하세요.
+기존 후불 요금제와의 차이점을 간략하게 비교하고, 어떤 분께 적합한지 대상 독자를 구체적으로 언급하세요.
+전문 용어는 쉬운 말로 풀어서 설명하고, 독자가 "나한테 필요한 것이구나"라고 느낄 수 있도록 작성하세요.</div>
+          <div class="template-sep"></div>
+          <div class="template-name">📄 장점나열형.md</div>
+          <div class="template-block">이 섹션에서는 선불폰 또는 선불유심의 핵심 장점을 독자가 이해하기 쉽게 나열하세요.
+##### 강조소제목을 활용해 각 장점을 시각적으로 구분하고, 각 장점마다 1~2문장의 설명을 덧붙이세요.
+장점은 독자가 실제로 느끼는 혜택 위주로 작성하세요. (예: 신용 조회 없음, 당일 개통, 약정 없음 등)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 요금제 ── -->
+    <div id="guide-요금제" class="guide-section">
+      <h2>요금제</h2>
+      <div class="sec-sub">요금제 정보를 설명하는 섹션 — 표 또는 리스트 형식</div>
+
+      <div class="guide-card">
+        <div class="card-head"><span class="badge badge-guide">사용 가이드</span> 이 폴더가 하는 일</div>
+        <div class="card-body">이 폴더에 있는 파일들은 AI가 요금제를 설명하는 섹션을 어떤 형식으로 쓸지 결정합니다.
+파일이 여러 개 있으면, 글을 생성할 때마다 그 중 하나를 자동으로 골라서 사용합니다.
+
+📌 파일 수정: 메모장으로 .md 파일 열기 → 수정 → UTF-8로 저장
+📌 새 파일: 메모장에 설명 작성 후 "파일명.md"로 저장 (예: "비교표형식.md")
+   예시 아이디어: "요금제를 비교표로 한눈에 보여줘", "요금제별 장단점을 글로 설명해줘"
+📌 이 가이드 내용은 AI에게 전달되지 않습니다.</div>
+      </div>
+
+      <div class="guide-card">
+        <div class="card-head"><span class="badge badge-template">스타일 템플릿</span> 현재 등록된 스타일 (랜덤 선택)</div>
+        <div class="card-body">
+          <div class="template-name">📄 표형식.md</div>
+          <div class="template-block">요금제 정보를 설명할 때는 반드시 마크다운 표(|) 형식으로 정리하세요.
+#### 요금제명 소제목 바로 아래에 표를 작성하고, 표 항목은 항목명 / 내용으로 구성하세요.
+표가 끝난 뒤 1~2문장으로 이 요금제가 어떤 사람에게 적합한지 짧게 설명하세요.</div>
+          <div class="template-sep"></div>
+          <div class="template-name">📄 리스트형식.md</div>
+          <div class="template-block">요금제 정보를 설명할 때는 번호 리스트(1. 2. 3.) 형식으로 정리하세요.
+#### 요금제명 소제목 아래에 월기본료, 음성, 문자, 데이터 항목을 번호 리스트로 나열하세요.
+리스트가 끝난 뒤 구분선(---)을 넣고, 이 요금제가 어떤 사람에게 좋은지 1~2문장으로 설명하세요.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 유심가이드 ── -->
+    <div id="guide-유심가이드" class="guide-section">
+      <h2>유심가이드</h2>
+      <div class="sec-sub">유심 구입처 및 종류 안내 섹션</div>
+
+      <div class="guide-card">
+        <div class="card-head"><span class="badge badge-guide">사용 가이드</span> 이 폴더가 하는 일</div>
+        <div class="card-body">이 폴더의 파일들은 AI가 유심 구입처 안내 섹션을 어떤 방식으로 작성할지 결정합니다.
+파일이 여러 개면 글 생성마다 하나를 랜덤으로 선택합니다.
+
+📌 파일 수정: 메모장으로 .md 파일 열기 → 수정 → UTF-8로 저장
+📌 새 파일: 메모장에 내용 작성 → "파일명.md"로 이 폴더에 저장 (인코딩: UTF-8)
+📌 이 가이드 내용은 AI에게 전달되지 않습니다.</div>
+      </div>
+
+      <div class="guide-card">
+        <div class="card-head"><span class="badge badge-template">스타일 템플릿</span> 현재 등록된 스타일 (랜덤 선택)</div>
+        <div class="card-body">
+          <div class="template-name">📄 일반안내형.md</div>
+          <div class="template-block">이 섹션에서는 선불유심 또는 선불폰 유심을 어디서 구입할 수 있는지 안내하세요.
+편의점, 이동통신사 공식몰, 온라인 쇼핑몰 등 주요 구입처를 나열하세요.
+유심 종류(나노/마이크로/표준)가 있다면 간단히 언급하고, 개통 전 확인 사항도 안내하세요.
+독자가 실제로 행동할 수 있도록 구체적인 방법을 안내하세요.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 인증서가이드 ── -->
+    <div id="guide-인증서가이드" class="guide-section">
+      <h2>인증서가이드</h2>
+      <div class="sec-sub">신분증 인증 방법 안내 섹션</div>
+
+      <div class="guide-card">
+        <div class="card-head"><span class="badge badge-guide">사용 가이드</span> 이 폴더가 하는 일</div>
+        <div class="card-body">이 폴더의 파일들은 AI가 신분증 인증 방법 안내 섹션을 어떤 방식으로 작성할지 결정합니다.
+파일이 여러 개면 글 생성마다 하나를 랜덤으로 선택합니다.
+
+📌 파일 수정: 메모장으로 .md 파일 열기 → 수정 → UTF-8로 저장
+📌 새 파일: 메모장에 내용 작성 → "파일명.md"로 이 폴더에 저장 (인코딩: UTF-8)
+📌 이 가이드 내용은 AI에게 전달되지 않습니다.</div>
+      </div>
+
+      <div class="guide-card">
+        <div class="card-head"><span class="badge badge-template">스타일 템플릿</span> 현재 등록된 스타일 (랜덤 선택)</div>
+        <div class="card-body">
+          <div class="template-name">📄 일반안내형.md</div>
+          <div class="template-block">이 섹션에서는 선불폰 또는 선불유심 개통 시 필요한 신분증 인증 방법을 안내하세요.
+주민등록증, 운전면허증 등 기본 신분증 외에 대체 서류(외국인등록증, 여권 등)도 언급하세요.
+신분증이 없거나 특수한 상황의 독자를 위해 대안도 안내하면 좋습니다.
+간결하게 핵심 정보만 전달하세요.</div>
+          <div class="template-sep"></div>
+          <div class="template-name">📄 표형식.md</div>
+          <div class="template-block">이 섹션에서는 신분증 종류와 사용 가능 여부를 표로 정리하세요.
+| 신분증 종류 | 사용 가능 여부 | 비고 | 형태로 구성하세요.
+표 아래에 주의사항이나 추가 안내를 1~2문장으로 작성하세요.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 개통절차 ── -->
+    <div id="guide-개통절차" class="guide-section">
+      <h2>개통절차</h2>
+      <div class="sec-sub">개통 순서를 단계별로 안내하는 섹션</div>
+
+      <div class="guide-card">
+        <div class="card-head"><span class="badge badge-guide">사용 가이드</span> 이 폴더가 하는 일</div>
+        <div class="card-body">이 폴더의 파일들은 AI가 개통 절차 안내 섹션을 어떤 방식으로 작성할지 결정합니다.
+파일이 여러 개면 글 생성마다 하나를 랜덤으로 선택합니다.
+
+📌 파일 수정: 메모장으로 .md 파일 열기 → 수정 → UTF-8로 저장
+📌 새 파일: 메모장에 내용 작성 → "파일명.md"로 이 폴더에 저장 (인코딩: UTF-8)
+📌 이 가이드 내용은 AI에게 전달되지 않습니다.</div>
+      </div>
+
+      <div class="guide-card">
+        <div class="card-head"><span class="badge badge-template">스타일 템플릿</span> 현재 등록된 스타일 (랜덤 선택)</div>
+        <div class="card-body">
+          <div class="template-name">📄 단계별.md</div>
+          <div class="template-block">이 섹션에서는 선불폰 또는 선불유심 개통 절차를 단계별로 안내하세요.
+각 단계는 ##### 강조소제목으로 구분하고, 각 단계마다 1~2문장으로 설명하세요.
+STEP 번호를 소제목에 포함하세요. (예: ##### STEP 1. 유심 구입)
+독자가 순서대로 따라할 수 있도록 명확하고 간결하게 작성하세요.</div>
+          <div class="template-sep"></div>
+          <div class="template-name">📄 간략형.md</div>
+          <div class="template-block">이 섹션에서는 개통 절차를 번호 리스트로 간단하게 안내하세요.
+각 단계는 1~2줄 이내로 핵심만 작성하세요.
+복잡한 설명보다 독자가 빠르게 파악할 수 있도록 간결하게 작성하세요.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 마무리 ── -->
+    <div id="guide-마무리" class="guide-section">
+      <h2>마무리</h2>
+      <div class="sec-sub">글의 마지막 섹션 — 요약 및 행동 유도</div>
+
+      <div class="guide-card">
+        <div class="card-head"><span class="badge badge-guide">사용 가이드</span> 이 폴더가 하는 일</div>
+        <div class="card-body">이 폴더의 파일들은 AI가 글 마무리 섹션을 어떤 방식으로 작성할지 결정합니다.
+파일이 여러 개면 글 생성마다 하나를 랜덤으로 선택합니다.
+
+📌 파일 수정: 메모장으로 .md 파일 열기 → 수정 → UTF-8로 저장
+📌 새 파일: 메모장에 내용 작성 → "파일명.md"로 이 폴더에 저장 (인코딩: UTF-8)
+📌 이 가이드 내용은 AI에게 전달되지 않습니다.</div>
+      </div>
+
+      <div class="guide-card">
+        <div class="card-head"><span class="badge badge-template">스타일 템플릿</span> 현재 등록된 스타일 (랜덤 선택)</div>
+        <div class="card-body">
+          <div class="template-name">📄 요약형.md</div>
+          <div class="template-block">이 섹션에서는 글 전체 내용을 간략하게 요약하고 독자에게 행동을 유도하세요.
+핵심 내용을 2~3문장으로 정리하고, 지금 바로 시작할 수 있다는 점을 강조하세요.
+서비스 URL이나 구입처 등 실행에 필요한 정보를 마지막에 안내하세요.
+독자가 망설이지 않도록 따뜻하고 자신감 있는 마무리를 작성하세요.</div>
+          <div class="template-sep"></div>
+          <div class="template-name">📄 질문유도형.md</div>
+          <div class="template-block">이 섹션에서는 글을 마무리하며 독자의 참여를 유도하세요.
+핵심 내용을 한 문장으로 요약하고, 독자가 댓글을 남기거나 질문할 수 있도록 열린 질문으로 마무리하세요.
+예) "혹시 개통하다가 막히는 부분이 있으셨나요? 댓글로 남겨주시면 도움드릴게요!"
+부드럽고 친근한 어조로 마무리하세요.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /guide-content -->
+</div><!-- /guide-wrap -->
+</div><!-- /page-guide -->
+
+<!-- ══════════════════════════════════════ -->
+<!-- 페이지 3: 스타일 템플릿 만들기         -->
+<!-- ══════════════════════════════════════ -->
+<div id="page-maker" class="page">
+<div class="maker-wrap">
+  <h1>✨ 스타일 템플릿 만들기</h1>
+  <div class="maker-sub">
+    원하는 섹션 형식을 자유롭게 설명하면 프로그램 규칙에 맞는 템플릿 파일(.md)로 변환해드립니다.<br>
+    생성된 파일을 해당 섹션의 <code style="background:#f0f0f0;padding:1px 5px;border-radius:4px;font-family:monospace">styles/섹션명/</code> 폴더에 넣으면 다음 글 생성부터 자동 적용됩니다.
+  </div>
+
+  <!-- 프로그램 규칙 요약 -->
+  <div class="rules-panel">
+    <div class="r-head">📋 프로그램 MD 규칙 (참고용)</div>
+    <div class="r"><span>#### 텍스트</span> → 24pt 볼드 + 색상 강조 (요금제명·제품명 전용, 독립 줄)</div>
+    <div class="r"><span>##### 텍스트</span> → 19pt 볼드 + 색상 강조 (섹션 내 강조소제목)</div>
+    <div class="r"><span>**텍스트**</span> → 인라인 볼드</div>
+    <div class="r"><span>- 항목</span> → 불릿 리스트 &nbsp;|&nbsp; <span>1. 항목</span> → 번호 리스트</div>
+    <div class="r"><span>| 열1 | 열2 |</span> → 마크다운 표 &nbsp;|&nbsp; <span>---</span> → 구분선</div>
+    <div class="r"><span>&gt; 텍스트</span> → 인용구 박스 (섹션 내 강조용, 선택적)</div>
+    <div class="r" style="color:#f38ba8">⚠ #### / ##### 를 불릿(-) 안에 사용 금지 &nbsp;|&nbsp; HTML 태그 금지</div>
+  </div>
+
+  <!-- 섹션 선택 + API 키 -->
+  <div class="maker-row">
+    <div>
+      <label>섹션 종류</label>
+      <select id="maker-section">
+        <option value="요금제">요금제</option>
+        <option value="도입부">도입부</option>
+        <option value="개념_장점">개념_장점</option>
+        <option value="유심가이드">유심가이드</option>
+        <option value="인증서가이드">인증서가이드</option>
+        <option value="개통절차">개통절차</option>
+        <option value="마무리">마무리</option>
+      </select>
+    </div>
+    <div style="flex:1">
+      <label>Gemini API 키</label>
+      <input type="text" id="maker-apikey" placeholder="AIzaSy..." style="width:100%">
+    </div>
+  </div>
+
+  <!-- 설명 입력 -->
+  <div class="maker-field">
+    <label>원하는 형식을 자유롭게 설명해주세요</label>
+    <textarea id="maker-input" rows="7" placeholder="예시 (요금제):
+요금제1 (볼드처리, 색상크게)
+- 월요금
+- 데이터
+- 통화/문자
+아래에 짧게 이 요금제 요약
+
+예시 (도입부):
+독자가 공감할 수 있는 상황으로 시작하고, 질문 형식으로 흥미를 유발하고 싶음"></textarea>
+  </div>
+
+  <div class="maker-row" style="margin-top:12px">
+    <button class="btn-primary" onclick="generateTemplate()" style="padding:9px 26px;font-size:14px">✨ 템플릿 생성</button>
+  </div>
+  <div class="maker-loading" id="maker-loading">⏳ Gemini가 템플릿을 생성 중입니다...</div>
+  <div class="maker-error" id="maker-error"></div>
+
+  <!-- 결과 -->
+  <div class="maker-result-wrap" id="maker-result-wrap" style="display:none">
+    <div class="maker-result-label">
+      생성된 템플릿
+      <button class="btn-success" onclick="copyTemplate()" style="padding:5px 14px;font-size:12px">📋 복사</button>
+      <button class="btn-primary" onclick="downloadTemplate()" style="padding:5px 14px;font-size:12px">⬇ .md 저장</button>
+    </div>
+    <div class="maker-field">
+      <textarea id="maker-output" rows="9" readonly></textarea>
+    </div>
+    <div class="maker-hint" id="maker-hint"></div>
+  </div>
+</div>
+</div><!-- /page-maker -->
+
+<script>
+/* ── 페이지 전환 ── */
+function showPage(name, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.top-nav .tab-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* ── 섹션 가이드 전환 ── */
+function showSection(name, el) {
+  document.querySelectorAll('.guide-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('guide-' + name).classList.add('active');
+  document.querySelectorAll('.guide-sidebar .sec-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* ══════════════════════════════════════════
+   MD 변환기 로직
+   Python fix_body()와 동기화 필요
+   규칙 변경 시 content_generator_v2.py도 함께 수정
+   ══════════════════════════════════════════ */
+const RULES = [
+  { id: "html_h",    label: "HTML 헤딩 → MD (#)" },
+  { id: "html_br",   label: "<br> → 줄바꿈" },
+  { id: "html_p",    label: "<p> → 일반 텍스트" },
+  { id: "html_strong", label: "<strong> → **볼드**" },
+  { id: "html_li",   label: "<li> → - 불릿" },
+  { id: "html_em",   label: "<em>/<i> → 일반 텍스트" },
+  { id: "html_etc",  label: "나머지 HTML 태그 제거" },
+  { id: "bold_ws",   label: "볼드 공백 정규화" },
+  { id: "double_h",  label: "이중 헤딩 정규화 (## ##)" },
+  { id: "blank3",    label: "연속 빈 줄 3개+ → 2개" },
+  { id: "dash1",     label: "단독 '-' → '---'" },
+  { id: "empty_bul", label: "빈 불릿 제거" },
+  { id: "bul_h",     label: "'- #### 텍스트' → 독립 줄" },
+  { id: "img_tag",   label: "[이미지 N] 앞에 > 추가" },
+  { id: "h1_rm",     label: "H1 제거 (# 제목)" },
+];
+
+function fixBody(text) {
+  const counts = {};
+  RULES.forEach(r => counts[r.id] = 0);
+
+  // ── 1. HTML → MD ──
+  ['h5','h4','h3','h2'].forEach(tag => {
+    const level = { h2:'##', h3:'###', h4:'####', h5:'#####' }[tag];
+    const re = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`, 'gi');
+    counts['html_h'] += (text.match(re) || []).length;
+    text = text.replace(re, (_, inner) => `${level} ${inner.replace(/<[^>]+>/g,'').trim()}`);
+  });
+  counts['html_br'] += (text.match(/<br\s*\/?>/gi) || []).length;
+  text = text.replace(/<br\s*\/?>/gi, '\n');
+  counts['html_p'] += (text.match(/<p[^>]*>[\s\S]*?<\/p>/gi) || []).length;
+  text = text.replace(/<p[^>]*>([\s\S]*?)<\/p>/gi, (_, inner) => inner.trim() + '\n');
+  counts['html_strong'] += (text.match(/<strong[^>]*>[\s\S]*?<\/strong>/gi) || []).length;
+  text = text.replace(/<strong[^>]*>([\s\S]*?)<\/strong>/gi, (_, inner) => `**${inner}**`);
+  text = text.replace(/<\/?[uo]l[^>]*>/gi, '');
+  counts['html_li'] += (text.match(/<li[^>]*>[\s\S]*?<\/li>/gi) || []).length;
+  text = text.replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, (_, inner) => `- ${inner.replace(/<[^>]+>/g,'').trim()}`);
+  counts['html_em'] += (text.match(/<(?:em|i)[^>]*>[\s\S]*?<\/(?:em|i)>/gi) || []).length;
+  text = text.replace(/<(?:em|i)[^>]*>([\s\S]*?)<\/(?:em|i)>/gi, (_, inner) => inner);
+  counts['html_etc'] += (text.match(/<[^>]+>/g) || []).length;
+  text = text.replace(/<[^>]+>/g, '');
+
+  // ── 2. 볼드 공백 정규화 ──
+  counts['bold_ws'] += (text.match(/\*\*\s*\*\*/g) || []).length;
+  text = text.replace(/\*\*\s*\*\*/g, '');
+  counts['bold_ws'] += (text.match(/\*\*\s+(.+?)\s+\*\*/g) || []).length;
+  text = text.replace(/\*\*\s+(.+?)\s+\*\*/g, (_, inner) => `**${inner.trim()}**`);
+
+  // ── 8. 이중 헤딩 정규화 ──
+  counts['double_h'] += (text.match(/^(#{2,5})\s+#+\s+/mg) || []).length;
+  text = text.replace(/^(#{2,5})\s+#+\s+/mg, '$1 ');
+
+  // ── 9. 연속 빈 줄 3개+ → 2개 ──
+  counts['blank3'] += (text.match(/\n{3,}/g) || []).length;
+  text = text.replace(/\n{3,}/g, '\n\n');
+
+  // ── 줄 단위 처리 ──
+  const lines = text.split('\n');
+  const out = [];
+  for (const line of lines) {
+    const s = line.trim();
+    if (s === '-') { out.push('---'); counts['dash1']++; continue; }
+    if (/^-\s*$/.test(s)) { counts['empty_bul']++; continue; }
+    const bulH = s.match(/^-\s+(#{4,5})\s+(.+)$/);
+    if (bulH) { out.push(`${bulH[1]} ${bulH[2].trim()}`); counts['bul_h']++; continue; }
+    if (/^\[이미지\s+\d+\]/.test(s)) { out.push(`> ${s}`); counts['img_tag']++; continue; }
+    if (/^#\s+\S/.test(s)) { counts['h1_rm']++; continue; }
+    out.push(line);
+  }
+
+  return { text: out.join('\n').trim(), counts };
+}
+
+function applyFix(raw) {
+  let frontmatter = '';
+  let body = raw;
+  const fmMatch = raw.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+  if (fmMatch) { frontmatter = `---\n${fmMatch[1]}\n---\n\n`; body = fmMatch[2].trim(); }
+  const { text, counts } = fixBody(body);
+  return { result: frontmatter + text, counts };
+}
+
+function renderLog(counts) {
+  const logEl = document.getElementById('log');
+  const changed = RULES.filter(r => counts[r.id] > 0);
+  if (changed.length === 0) {
+    logEl.innerHTML = '<span class="no-change">변경사항 없음 — 이미 규칙에 맞는 MD입니다.</span>';
+    return;
+  }
+  logEl.innerHTML = changed.map(r =>
+    `<div class="log-item">• ${r.label} <span class="cnt">(${counts[r.id]}곳)</span></div>`
+  ).join('');
+}
+
+function convert() {
+  const raw = document.getElementById('input').value;
+  if (!raw.trim()) { alert('변환할 내용을 입력하세요.'); return; }
+  const { result, counts } = applyFix(raw);
+  document.getElementById('output').value = result;
+  renderLog(counts);
+}
+
+function copyResult() {
+  const out = document.getElementById('output');
+  if (!out.value) { alert('변환된 내용이 없습니다.'); return; }
+  navigator.clipboard.writeText(out.value).then(() => alert('복사 완료!')).catch(() => {
+    out.select(); document.execCommand('copy'); alert('복사 완료!');
+  });
+}
+
+function downloadMd() {
+  const out = document.getElementById('output').value;
+  if (!out) { alert('변환된 내용이 없습니다.'); return; }
+  let suggested = '변환결과';
+  const fmMatch = out.match(/^---[\s\S]*?title:\s*"?([^\n"]+)"?/m);
+  const h2Match = out.match(/^##\s+(.+)/m);
+  const inputFirst = document.getElementById('input').value.match(/^##?\s+(.+)/m);
+  if (fmMatch) suggested = fmMatch[1].trim();
+  else if (h2Match) suggested = h2Match[1].trim();
+  else if (inputFirst) suggested = inputFirst[1].trim();
+  const name = prompt('저장할 파일명을 입력하세요 (.md 자동 추가)', suggested);
+  if (name === null) return;
+  const filename = (name.trim() || suggested).replace(/[\\/:*?"<>|]/g, '_').substring(0, 80) + '.md';
+  const blob = new Blob([out], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+function clearAll() {
+  document.getElementById('input').value = '';
+  document.getElementById('output').value = '';
+  document.getElementById('log').innerHTML = '<span class="empty">변환 결과가 여기에 표시됩니다.</span>';
+}
+
+document.addEventListener('keydown', e => { if (e.ctrlKey && e.key === 'Enter') convert(); });
+
+/* ── 스타일 템플릿 생성기 ── */
+const MAKER_SYSTEM = `당신은 네이버 블로그 자동화 프로그램의 스타일 템플릿 작성 전문가입니다.
+사용자가 원하는 글 형식을 설명하면, 아래 MD 기호를 반드시 명시적으로 포함한 AI 작성 지시문으로 변환하세요.
+
+[프로그램 MD 기호 — 지시문 내에서 이 기호를 직접 언급해야 함]
+- #### 텍스트 → 24pt 볼드 + 색상 강조 (사용자가 "크게", "색상", "강조제목" 요청 시 사용)
+- ##### 텍스트 → 19pt 볼드 + 색상 강조 (사용자가 "소제목 강조", "포인트" 요청 시 사용)
+- **텍스트** → 인라인 볼드 (사용자가 "볼드", "굵게" 요청 시 사용, 문장 내 일부에만 적용)
+- - 항목 → 불릿 리스트
+- 1. 항목 → 번호 리스트
+- | 열1 | 열2 | → 2열 마크다운 표 (항목 | 내용 형식)
+- --- → 수평 구분선
+- > 텍스트 → 인용구 박스 (선택적, 섹션 내 특정 텍스트를 강조 박스로 표시할 때)
+
+[사용자 요청 → MD 기호 매핑 예시]
+- "요금제명 볼드, 색상크게" → "#### 요금제명 소제목을 쓰고"
+- "제목을 강조" → "##### 강조소제목으로 표시하고"
+- "표로 정리" → "| 항목 | 내용 | 형식의 2열 표를 작성하고"
+- "목록으로" → "- 불릿 리스트로 나열하고"
+- "볼드 요약" → "**볼드**로 한 문장 요약을 덧붙이고"
+
+[금지 사항]
+- #### 또는 ##### 를 불릿(-) 안에 사용하라고 지시 금지
+- HTML 태그 언급 금지
+- ## 소제목은 자동 삽입되므로 언급 불필요
+
+[출력 형식]
+- 한국어 지시문 형태, 3~6문장
+- 반드시 위의 MD 기호(####, ##### 등)를 직접 명시해서 작성
+- 올바른 예: "#### 요금제명 소제목을 쓰고, 바로 아래 | 항목 | 내용 | 표를 작성하세요."
+- 잘못된 예: "요금제 이름을 크고 굵게 강조하여 작성하세요." (MD 기호 미명시)
+- 제목, 설명, 코드 블록 없이 지시문만 출력`;
+
+async function generateTemplate() {
+  const section  = document.getElementById('maker-section').value;
+  const apiKey   = document.getElementById('maker-apikey').value.trim();
+  const desc     = document.getElementById('maker-input').value.trim();
+  const loadEl   = document.getElementById('maker-loading');
+  const errEl    = document.getElementById('maker-error');
+  const wrapEl   = document.getElementById('maker-result-wrap');
+
+  if (!apiKey) { alert('Gemini API 키를 입력하세요.'); return; }
+  if (!desc)   { alert('원하는 형식을 설명해주세요.'); return; }
+
+  loadEl.classList.add('visible');
+  errEl.classList.remove('visible');
+  wrapEl.style.display = 'none';
+
+  const userMsg = `섹션 종류: ${section}\n\n사용자 요청:\n${desc}`;
+
+  try {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-04-17:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system_instruction: { parts: [{ text: MAKER_SYSTEM }] },
+          contents: [{ parts: [{ text: userMsg }] }],
+          generationConfig: { temperature: 0.7, maxOutputTokens: 512 }
+        })
+      }
+    );
+    const json = await res.json();
+    if (json.error) throw new Error(json.error.message);
+    const text = json.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+    if (!text) throw new Error('결과가 비어있습니다.');
+
+    document.getElementById('maker-output').value = text;
+    document.getElementById('maker-hint').innerHTML =
+      `<strong>📂 저장 위치:</strong> <code>styles/${section}/파일명.md</code><br>` +
+      `파일명은 형식을 나타내는 이름으로 지어주세요. (예: <code>간략형.md</code>, <code>내가만든요금제.md</code>)<br>` +
+      `저장 후 앱을 재실행하면 다음 글 생성부터 자동으로 적용됩니다.`;
+    wrapEl.style.display = 'block';
+  } catch(e) {
+    errEl.textContent = '오류: ' + e.message;
+    errEl.classList.add('visible');
+  } finally {
+    loadEl.classList.remove('visible');
+  }
+}
+
+function copyTemplate() {
+  const out = document.getElementById('maker-output');
+  if (!out.value) return;
+  navigator.clipboard.writeText(out.value)
+    .then(() => alert('복사 완료!'))
+    .catch(() => { out.select(); document.execCommand('copy'); alert('복사 완료!'); });
+}
+
+function downloadTemplate() {
+  const text = document.getElementById('maker-output').value;
+  if (!text) return;
+  const section = document.getElementById('maker-section').value;
+  const name = prompt('파일명을 입력하세요 (.md 자동 추가)', `새${section}스타일`);
+  if (name === null) return;
+  const filename = (name.trim() || `새${section}스타일`).replace(/[\\/:*?"<>|]/g, '_') + '.md';
+  const blob = new Blob([text], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
