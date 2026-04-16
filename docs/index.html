@@ -673,10 +673,18 @@
       <div class="folder-tree">
         <span class="dir">콘텐츠/{아이디}/</span><br>
         &nbsp;&nbsp;└── <span class="dir">prompt/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">직접 만드세요</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">guide.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">블로그 글 작성 지침 ← 필수</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">guide.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">브랜드 정보 + 금지사항 ← 필수</span><br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">titles.txt</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">제목 목록 (한 줄에 하나) ← 필수</span><br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">image_guide.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">이미지 프롬프트 추가 지침 (선택)</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="file">used_titles.json</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">자동 생성 — 사용된 제목 기록</span>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">used_titles.json</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">자동 생성 — 사용된 제목 기록</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="dir">styles/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">글 스타일 폴더 ← 계정 추가 시 자동 생성</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">도입부/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">공감형.md, 질문형.md, 상황제시형.md</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">요금제/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">표형식.md, 리스트형식.md</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">개통순서/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">단계별.md, 스크린샷형.md</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">전체구조/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">QA형식.md, 비교분석형.md</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">유심_인증서/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">상세안내형.md, 간략형.md</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">문체/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">친근한.md, 전문적.md, 간결한.md</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="dir">섹션포맷/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">표위주.md, 리스트위주.md, 혼합형.md</span>
       </div>
 
       <div class="section-divider">titles.txt 예시</div>
@@ -823,6 +831,70 @@
         <strong>상세 가이드</strong> — 아래 자료 다운로드에서 <em>이미지프롬프트_지침.md</em>를 받아<br>
         ChatGPT나 Claude에게 그대로 전달하면 프롬프트를 대신 작성해 줍니다.
       </div>
+    </div>
+  </div>
+
+  <!-- 스타일 폴더 시스템 -->
+  <div class="card" style="margin-bottom:16px;">
+    <h3 style="font-size:17px;font-weight:800;margin-bottom:8px;">✨ 글 스타일 폴더 시스템</h3>
+    <p style="color:#555;font-size:14px;line-height:1.7;margin-bottom:14px;">
+      계정별 <code>prompt/styles/</code> 폴더에 .md 파일을 넣으면<br>
+      AI가 글을 생성할 때마다 파일을 <strong>랜덤 선택</strong>해 스타일을 다양하게 만듭니다.<br>
+      파일이 많을수록 글이 다채로워집니다.
+    </p>
+    <div class="section-divider">guide.md vs styles/ 역할 분리</div>
+    <div style="display:flex;gap:16px;margin-bottom:14px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:200px;background:#f0f5ff;border:1px solid #b5ccf0;border-radius:10px;padding:14px;">
+        <div style="font-weight:800;color:#1a5fa8;margin-bottom:6px;">📄 guide.md — "무엇을"</div>
+        <ul style="font-size:13px;color:#333;line-height:1.8;padding-left:18px;">
+          <li>브랜드명, URL, 서비스명</li>
+          <li>요금제 정보, 가격, 혜택</li>
+          <li>타겟 독자, 금지사항</li>
+          <li>브랜드 특징 (USP)</li>
+        </ul>
+      </div>
+      <div style="flex:1;min-width:200px;background:#f0faf4;border:1px solid #b7dfc5;border-radius:10px;padding:14px;">
+        <div style="font-weight:800;color:#1a7f3c;margin-bottom:6px;">📁 styles/ — "어떻게"</div>
+        <ul style="font-size:13px;color:#333;line-height:1.8;padding-left:18px;">
+          <li>도입부 스타일 (공감/질문/상황)</li>
+          <li>요금제 표시 형식 (표/리스트)</li>
+          <li>개통순서 구성 방식</li>
+          <li>전체구조, 문체, 섹션포맷</li>
+        </ul>
+      </div>
+    </div>
+    <div style="background:#fffbea;border:1px solid #e6c84a;border-radius:8px;padding:12px;font-size:13px;color:#7a5c00;">
+      <strong>⚠️ guide.md에 포맷 지시 넣지 마세요.</strong>
+      "표로 정리해줘", "Q&A 형식으로 써줘" 같은 내용은 styles/ 폴더에 .md로 추가하세요.<br>
+      guide.md와 styles/가 충돌하면 글 품질이 저하됩니다.
+    </div>
+    <div class="section-divider" style="margin-top:14px;">스타일 파일 만드는 방법</div>
+    <ol style="font-size:14px;color:#333;line-height:2;padding-left:22px;">
+      <li>앱에서 계정 선택 → <strong>편집 → 스타일 설정</strong> 버튼 클릭</li>
+      <li>원하는 카테고리의 <strong>📂 폴더</strong> 버튼으로 탐색기 열기</li>
+      <li>폴더 안의 .md 파일을 메모장으로 열어 수정, 또는 새 .md 파일 추가</li>
+      <li>각 폴더의 <code>가이드.txt</code> 파일에 상세 작성 방법 안내 있음</li>
+    </ol>
+  </div>
+
+  <!-- MD 변환기 -->
+  <div class="card" style="margin-bottom:16px;">
+    <h3 style="font-size:17px;font-weight:800;margin-bottom:8px;">🔄 MD 변환기 (convert.html)</h3>
+    <p style="color:#555;font-size:14px;line-height:1.7;margin-bottom:14px;">
+      Claude나 Gemini로 만든 MD를 프로그램 규칙에 맞게 변환합니다.<br>
+      서버 불필요 — 브라우저에서 바로 실행됩니다.
+    </p>
+    <div style="background:#f9f9f9;border:1px solid #e0e0e0;border-radius:8px;padding:14px;font-size:13px;color:#333;line-height:1.8;">
+      <strong>자동 교정 항목:</strong><br>
+      • HTML 태그 → MD (strong, br, p, h2~h5, li 등)<br>
+      • <code>[이미지 N]</code> 앞에 <code>&gt;</code> 자동 추가<br>
+      • 단독 <code>-</code> → <code>---</code> 구분선<br>
+      • 이중 헤딩 정규화 (<code>## ## 제목</code> → <code>## 제목</code>)<br>
+      • 빈 불릿, 연속 빈 줄 자동 제거<br>
+    </div>
+    <div style="margin-top:10px;font-size:13px;color:#555;">
+      📥 convert.html은 프로그램 zip 파일 안에 포함되어 있습니다.<br>
+      압축 해제 후 브라우저로 열거나 더블클릭하면 바로 사용 가능합니다.
     </div>
   </div>
 
