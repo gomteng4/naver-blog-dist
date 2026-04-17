@@ -5,33 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>네이버 블로그 자동 포스팅 프로그램</title>
   <meta name="description" content="네이버 블로그 자동 포스팅 프로그램 다운로드 및 설치 안내" />
-  <meta property="og:title" content="네이버 블로그 자동 포스팅 프로그램" />
-  <meta property="og:description" content="MD 파일 작성 후 버튼 하나로 네이버 블로그 자동 포스팅" />
-  <meta property="og:type" content="website" />
   <style>
     :root {
-      --bg:        #f2f2f2;
-      --surface:   #ffffff;
-      --card:      #f8f8f8;
-      --border:    #e2e2e2;
-      --border2:   #d0d0d0;
-      --accent:    #FFE812;
-      --accent2:   #F5DC00;
-      --accent-dk: #a07800;
-      --text:      #111111;
-      --text2:     #333333;
-      --muted:     #777777;
-      --green:     #1a7f3c;
-      --green-bg:  #edfaf3;
-      --green-bd:  #b7dfc5;
-      --blue:      #1a5fa8;
-      --blue-bg:   #edf3ff;
-      --blue-bd:   #b5ccf0;
-      --warn-bg:   #fffbea;
-      --warn-bd:   #e6c84a;
-      --warn-txt:  #7a5c00;
-      --r:         14px;
-      --shadow:    0 2px 14px rgba(0,0,0,.07);
+      --bg:       #f0f0f0;
+      --surface:  #ffffff;
+      --card:     #f7f7f7;
+      --border:   #e3e3e3;
+      --accent:   #FFE812;
+      --accent2:  #F5DC00;
+      --accent-dk:#a07800;
+      --text:     #111111;
+      --muted:    #777777;
+      --green:    #1a7f3c;
+      --green-bg: #edfaf3;
+      --green-bd: #b7dfc5;
+      --blue:     #1a5fa8;
+      --blue-bg:  #edf3ff;
+      --blue-bd:  #b5ccf0;
+      --warn-bg:  #fffbea;
+      --warn-bd:  #e6c84a;
+      --warn-txt: #7a5c00;
+      --side-w:   220px;
+      --r:        12px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -40,357 +35,480 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       TOP HEADER
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .top-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 28px;
+      height: 54px;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      padding: 52px 20px 88px;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    .container { width: 100%; max-width: 740px; }
-
-    /* ── 헤더 ── */
-    .header { text-align: center; margin-bottom: 44px; }
-    .header .badge {
-      display: inline-block;
-      background: var(--accent);
-      color: #333;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: .1em;
-      padding: 5px 14px;
-      border-radius: 20px;
-      margin-bottom: 18px;
-      text-transform: uppercase;
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 800; font-size: 15px; color: var(--text); text-decoration: none;
     }
-    .header h1 {
-      font-size: clamp(24px, 5.5vw, 36px);
-      font-weight: 900;
-      letter-spacing: -.5px;
-      line-height: 1.3;
-      margin-bottom: 12px;
+    .logo .logo-badge {
+      background: var(--accent); color: #333;
+      font-size: 10px; font-weight: 800; padding: 3px 8px;
+      border-radius: 4px; letter-spacing: .04em;
     }
-    .header h1 em { color: var(--accent-dk); font-style: normal; }
-    .header .sub { color: var(--muted); font-size: 16px; line-height: 1.8; }
-
-    /* ── 기능 요약 뱃지 행 ── */
-    .feat-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: center;
-      margin-top: 18px;
-    }
-    .feat-pill {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 5px 14px;
-      font-size: 13px;
-      color: var(--text2);
-      font-weight: 600;
-    }
-    .feat-pill.new {
-      background: var(--green-bg);
-      border-color: var(--green-bd);
-      color: var(--green);
-    }
-
-    /* ── 다운로드 카드 ── */
-    .dl-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-top: 4px solid var(--accent);
-      border-radius: var(--r);
-      padding: 28px 30px 26px;
-      margin-bottom: 14px;
-      box-shadow: var(--shadow);
-    }
-    .ver-row {
-      display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
-    }
-    .ver-tag {
-      background: var(--card); border: 1px solid var(--border2);
-      border-radius: 6px; padding: 3px 10px;
+    .header-right { display: flex; align-items: center; gap: 10px; }
+    .ver-chip {
       font-family: monospace; font-size: 12px; color: var(--muted);
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 5px; padding: 3px 9px;
     }
-    .new-tag {
-      background: var(--green-bg); border: 1px solid var(--green-bd);
-      border-radius: 6px; padding: 3px 10px;
-      font-size: 12px; font-weight: 700; color: var(--green);
-    }
-    .dl-card h2 { font-size: 21px; font-weight: 800; margin-bottom: 6px; }
-    .dl-card .dl-desc { color: var(--muted); font-size: 14.5px; line-height: 1.65; margin-bottom: 22px; }
-    .btn-dl {
-      display: inline-flex; align-items: center; gap: 8px;
+    .btn-dl-sm {
+      display: inline-flex; align-items: center; gap: 6px;
       background: var(--accent); color: #111;
-      font-weight: 800; font-size: 15px;
-      padding: 13px 32px; border-radius: 10px;
+      font-weight: 700; font-size: 13px;
+      padding: 8px 18px; border-radius: 8px;
       text-decoration: none;
-      transition: background .15s, transform .1s, box-shadow .15s;
-      box-shadow: 0 2px 10px rgba(200,160,0,.22);
+      transition: background .12s, transform .1s;
     }
-    .btn-dl:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(200,160,0,.3); }
-    .btn-dl:active { transform: translateY(0); }
-    .file-note { display: inline-block; margin-left: 12px; color: var(--muted); font-size: 12.5px; vertical-align: middle; }
+    .btn-dl-sm:hover { background: var(--accent2); transform: translateY(-1px); }
+    .btn-dl-sm:active { transform: translateY(0); }
 
-    /* ── 카드 공통 ── */
-    .card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r); padding: 24px 26px; margin-bottom: 14px;
-    }
-    .card-title {
-      font-size: 11.5px; font-weight: 800; text-transform: uppercase;
-      letter-spacing: .12em; color: var(--muted); margin-bottom: 14px;
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       LAYOUT
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .layout {
+      display: flex;
+      min-height: calc(100vh - 54px);
     }
 
-    /* ── 섹션 구분선 ── */
-    .divider {
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       SIDEBAR
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .sidebar {
+      width: var(--side-w);
+      flex-shrink: 0;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: 54px;
+      height: calc(100vh - 54px);
+      overflow-y: auto;
+      padding: 22px 0 32px;
+    }
+    .sidebar-section {
+      font-size: 10px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: .12em; color: var(--muted);
+      padding: 0 20px; margin: 18px 0 6px;
+    }
+    .sidebar-section:first-child { margin-top: 0; }
+    .nav-item {
+      display: flex; align-items: center; gap: 9px;
+      padding: 9px 20px; cursor: pointer;
+      font-size: 14px; font-weight: 500; color: #444;
+      border-left: 3px solid transparent;
+      transition: background .1s, color .1s, border-color .1s;
+      user-select: none;
+    }
+    .nav-item:hover { background: #f5f5f5; color: var(--text); }
+    .nav-item.active {
+      background: #fffbdc; color: var(--accent-dk);
+      border-left-color: var(--accent); font-weight: 700;
+    }
+    .nav-item .nav-icon { font-size: 15px; flex-shrink: 0; }
+    .nav-new {
+      font-size: 9px; font-weight: 800; background: var(--green-bg);
+      color: var(--green); border: 1px solid var(--green-bd);
+      border-radius: 3px; padding: 1px 5px; margin-left: auto;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       MAIN CONTENT
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .main {
+      flex: 1;
+      min-width: 0;
+      padding: 40px 48px 80px;
+      max-width: 780px;
+    }
+
+    /* section pages */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .page-header { margin-bottom: 28px; }
+    .page-tag {
+      display: inline-block;
+      font-size: 10px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: .12em; color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .page-title { font-size: 26px; font-weight: 900; letter-spacing: -.4px; margin-bottom: 10px; }
+    .page-desc { font-size: 15px; color: var(--muted); line-height: 1.8; }
+
+    .page-divider {
       font-size: 11px; font-weight: 700; text-transform: uppercase;
       letter-spacing: .1em; color: var(--muted);
-      border-top: 1px solid var(--border); margin: 18px 0 14px;
-      padding-top: 14px;
+      border-top: 1px solid var(--border); margin: 24px 0 16px; padding-top: 16px;
     }
 
-    /* ── 탭 ── */
-    .tab-wrap { margin-bottom: 14px; }
-    .tab-nav {
-      display: flex; gap: 3px;
-      background: var(--card); border: 1px solid var(--border);
-      border-bottom: none; border-radius: 12px 12px 0 0; padding: 5px 5px 0;
+    /* ── 카드 ── */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 22px 24px; margin-bottom: 14px;
     }
-    .tab-btn {
-      flex: 1; background: none; border: none;
-      border-bottom: 2px solid transparent;
-      color: var(--muted); font-size: 14px; font-weight: 600;
-      padding: 11px 6px 10px; cursor: pointer;
-      transition: color .15s, border-color .15s, background .15s;
-      font-family: inherit; text-align: center; border-radius: 8px 8px 0 0;
+    .card-title {
+      font-size: 11px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: .12em; color: var(--muted); margin-bottom: 12px;
     }
-    .tab-btn:hover { color: var(--text); background: #efefef; }
-    .tab-btn.active {
-      color: var(--accent-dk); border-bottom-color: var(--accent);
-      background: var(--surface); font-weight: 700;
+
+    code {
+      background: var(--card); border: 1px solid #ddd;
+      border-radius: 4px; padding: 2px 7px;
+      font-family: Consolas, monospace; font-size: 13px; color: #b86000;
     }
-    .tab-panel {
-      display: none; background: var(--surface);
-      border: 1px solid var(--border); border-top: none;
-      border-radius: 0 0 var(--r) var(--r); padding: 24px 26px 22px;
-    }
-    .tab-panel.active { display: block; }
 
     /* ── 스텝 리스트 ── */
     .steps { list-style: none; }
     .step { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border); }
     .step:last-child { border-bottom: none; padding-bottom: 0; }
     .step-n {
-      flex-shrink: 0; width: 24px; height: 24px;
-      background: #fff8d6; border: 1.5px solid var(--accent);
+      flex-shrink: 0; width: 26px; height: 26px;
+      background: #fff8d6; border: 2px solid var(--accent);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 800; color: var(--accent-dk); margin-top: 2px;
+      font-size: 11px; font-weight: 800; color: var(--accent-dk); margin-top: 1px;
     }
-    .step-body strong { display: block; font-size: 16px; margin-bottom: 4px; }
-    .step-body span { font-size: 14.5px; color: var(--muted); line-height: 1.75; }
-
-    code {
-      background: var(--card); border: 1px solid var(--border2);
-      border-radius: 4px; padding: 2px 7px;
-      font-family: Consolas, monospace; font-size: 13.5px; color: #b86000;
-    }
+    .step-body strong { display: block; font-size: 15.5px; margin-bottom: 4px; }
+    .step-body span { font-size: 14px; color: var(--muted); line-height: 1.75; }
 
     /* ── 폴더 트리 ── */
     .folder-tree {
       background: #fafafa; border: 1px solid var(--border);
       border-radius: 8px; padding: 14px 18px;
-      font-family: Consolas, monospace; font-size: 13.5px; color: #444;
+      font-family: Consolas, monospace; font-size: 13px; color: #444;
       line-height: 2; margin: 10px 0;
     }
     .folder-tree .dir { color: var(--blue); font-weight: 600; }
     .folder-tree .file { color: var(--green); }
     .folder-tree .note { color: #aaa; font-style: italic; }
 
-    /* ── 스펙 카드 그리드 ── */
-    .spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-    .spec-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 10px; padding: 14px 16px;
-    }
-    .spec-title { font-size: 13px; font-weight: 700; color: var(--text2); margin-bottom: 5px; }
-    .spec-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
+    /* ── 그리드 ── */
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .g-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+    .g-title { font-size: 13px; font-weight: 700; color: #333; margin-bottom: 5px; }
+    .g-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
 
-    /* ── 강조 박스 ── */
-    .info-box {
-      padding: 12px 16px; border-radius: 10px;
-      font-size: 13.5px; line-height: 1.7; margin-bottom: 14px;
-    }
-    .info-box.blue { background: var(--blue-bg); border: 1px solid var(--blue-bd); color: var(--blue); }
-    .info-box.green { background: var(--green-bg); border: 1px solid var(--green-bd); color: var(--green); }
-    .info-box.warn { background: var(--warn-bg); border: 1px solid var(--warn-bd); color: var(--warn-txt); }
+    /* ── 인포 박스 ── */
+    .info { padding: 12px 16px; border-radius: 10px; font-size: 13.5px; line-height: 1.7; margin-bottom: 14px; }
+    .info.blue { background: var(--blue-bg); border: 1px solid var(--blue-bd); color: var(--blue); }
+    .info.green { background: var(--green-bg); border: 1px solid var(--green-bd); color: var(--green); }
+    .info.warn { background: var(--warn-bg); border: 1px solid var(--warn-bd); color: var(--warn-txt); }
 
-    /* ── tip box ── */
-    .tip-box {
+    .tip {
       background: #fffdf0; border: 1px solid var(--warn-bd);
       border-left: 3px solid var(--accent-dk); border-radius: 8px;
-      padding: 12px 16px; font-size: 13.5px; color: #6a5000; line-height: 1.7;
-      margin-top: 16px;
+      padding: 12px 16px; font-size: 13.5px; color: #6a5000; line-height: 1.7; margin-top: 16px;
     }
 
-    /* ── 기능 하이라이트 카드 ── */
-    .feature-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r); padding: 22px 24px; margin-bottom: 14px;
-    }
-    .feature-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 8px; }
-    .feature-card p { font-size: 13.5px; color: #555; line-height: 1.7; margin-bottom: 12px; }
-
-    /* ── 이미지 모드 ── */
+    /* ── 이미지 모드 카드 ── */
     .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
     .mode-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
     .mode-card.full { grid-column: 1/-1; }
     .mode-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--accent-dk); margin-bottom: 5px; }
-    .mode-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+    .mode-title { font-size: 15.5px; font-weight: 700; margin-bottom: 6px; }
     .mode-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
     /* ── 그리드 비주얼 ── */
-    .grid-visual-wrap { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
-    .grid-box { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--border); width: 90px; }
-    .grid-cell { background: var(--blue-bg); font-size: 10px; color: var(--blue); text-align: center; padding: 6px 2px; }
-    .grid-arrow { font-size: 20px; color: var(--muted); }
-    .grid-split { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; width: 90px; }
-    .grid-split-cell { background: var(--green-bg); border: 1px solid var(--green-bd); font-size: 10px; color: var(--green); text-align: center; padding: 6px 2px; border-radius: 3px; }
-    .cell-label { display: block; font-size: 9px; color: var(--muted); }
+    .grid-vis { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 12px; }
+    .grid-box { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--border); width: 88px; }
+    .grid-cell { background: var(--blue-bg); font-size: 10px; color: var(--blue); text-align: center; padding: 7px 2px; }
+    .grid-arrow { font-size: 22px; color: var(--muted); }
+    .grid-split { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; width: 88px; }
+    .grid-split-cell { background: var(--green-bg); border: 1px solid var(--green-bd); font-size: 10px; color: var(--green); text-align: center; padding: 7px 2px; border-radius: 3px; }
+    .cell-sub { display: block; font-size: 9px; color: var(--muted); }
 
     /* ── 자료 다운로드 ── */
-    .files-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r); padding: 24px 28px; margin-bottom: 14px;
-      box-shadow: var(--shadow);
-    }
-    .files-card h3 { font-size: 17px; font-weight: 800; margin-bottom: 6px; }
-    .files-card .sub { font-size: 13.5px; color: var(--muted); line-height: 1.65; margin-bottom: 18px; }
-    .file-row {
-      display: flex; align-items: center; gap: 12px;
-      padding: 14px 0; border-bottom: 1px solid var(--border);
-    }
+    .file-row { display: flex; align-items: center; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--border); }
     .file-row:last-child { border-bottom: none; padding-bottom: 0; }
-    .file-icon { font-size: 22px; flex-shrink: 0; }
-    .file-info { flex: 1; min-width: 0; }
-    .file-name { font-size: 14px; font-weight: 700; color: var(--text2); margin-bottom: 2px; }
+    .file-icon { font-size: 24px; flex-shrink: 0; }
+    .file-info { flex: 1; }
+    .file-name { font-size: 14.5px; font-weight: 700; color: #222; margin-bottom: 3px; }
     .file-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
     .btn-file {
       flex-shrink: 0;
       display: inline-flex; align-items: center; gap: 5px;
-      background: #f5f5f5; border: 1px solid var(--border2);
-      border-radius: 8px; padding: 7px 16px;
-      text-decoration: none; font-size: 13px;
-      color: var(--text2); font-weight: 600;
-      transition: background .12s, border-color .12s;
-      white-space: nowrap;
+      background: var(--card); border: 1px solid #ccc;
+      border-radius: 8px; padding: 8px 18px;
+      text-decoration: none; font-size: 13px; font-weight: 600; color: #333;
+      transition: background .1s;
     }
-    .btn-file:hover { background: #ebebeb; border-color: #bbb; }
-    .btn-file.yellow { background: var(--accent); border-color: #d4bc00; color: #333; font-weight: 700; }
-    .btn-file.yellow:hover { background: var(--accent2); }
+    .btn-file:hover { background: #ececec; }
+    .btn-file.hl { background: var(--accent); border-color: #d4bc00; color: #333; font-weight: 700; }
+    .btn-file.hl:hover { background: var(--accent2); }
 
-    /* ── API 비용 테이블 ── */
+    /* ── 비용 테이블 ── */
     .cost-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
     .cost-table th { text-align: left; padding: 9px 10px; font-weight: 700; background: var(--card); border-bottom: 2px solid var(--border); }
-    .cost-table th:not(:first-child) { text-align: center; }
-    .cost-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-    .cost-table td:not(:first-child) { text-align: center; }
+    .cost-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); }
     .cost-table tr:last-child td { border-bottom: none; }
-    .cost-small { font-size: 11px; color: var(--muted); display: block; }
+    .cost-num { text-align: right; font-weight: 600; }
+    .cost-center { text-align: center; }
+    .cost-sub { font-size: 11px; color: var(--muted); display: block; }
     .cost-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
     .cost-box { border-radius: 10px; padding: 14px 16px; }
-    .cost-box-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; }
-    .cost-box-subtitle { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+    .cost-box-lbl { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; }
+    .cost-box-sub { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
     .cost-box-price { font-size: 22px; font-weight: 900; }
     .cost-box-unit { font-size: 13px; font-weight: 400; }
 
-    /* ── 푸터 ── */
-    footer { margin-top: 48px; font-size: 12px; color: #aaa; text-align: center; }
+    /* ── 히어로 (첫 페이지) ── */
+    .hero {
+      background: linear-gradient(135deg, #fff9c4 0%, #ffffff 60%);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 36px 36px 32px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, #ffe81233 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero .badge {
+      display: inline-block; background: var(--accent); color: #333;
+      font-size: 10px; font-weight: 800; letter-spacing: .1em;
+      padding: 4px 12px; border-radius: 20px; margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+    .hero h1 { font-size: 28px; font-weight: 900; letter-spacing: -.4px; line-height: 1.3; margin-bottom: 10px; }
+    .hero h1 em { color: var(--accent-dk); font-style: normal; }
+    .hero p { color: var(--muted); font-size: 15px; line-height: 1.8; margin-bottom: 24px; }
+    .hero-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .btn-hero {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent); color: #111;
+      font-weight: 800; font-size: 15px;
+      padding: 13px 30px; border-radius: 10px;
+      text-decoration: none;
+      box-shadow: 0 2px 10px rgba(200,160,0,.25);
+      transition: background .12s, transform .1s;
+    }
+    .btn-hero:hover { background: var(--accent2); transform: translateY(-1px); }
+    .hero-size { font-size: 12.5px; color: var(--muted); }
+    .feat-pills { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
+    .feat-pill {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 5px 13px;
+      font-size: 12.5px; font-weight: 600; color: #444;
+    }
+    .feat-pill.new { background: var(--green-bg); border-color: var(--green-bd); color: var(--green); }
 
-    /* ── 반응형 ── */
-    @media (max-width: 540px) {
-      .btn-dl { width: 100%; justify-content: center; }
-      .file-note { display: block; margin: 8px 0 0; text-align: center; }
-      .tab-btn { font-size: 12px; padding: 9px 4px; }
-      .spec-grid, .mode-grid, .cost-summary { grid-template-columns: 1fr; }
+    /* ── 네비게이션 prev/next ── */
+    .page-nav {
+      display: flex; justify-content: space-between; margin-top: 40px;
+      padding-top: 20px; border-top: 1px solid var(--border);
+    }
+    .page-nav-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 9px; padding: 10px 18px;
+      font-size: 13.5px; font-weight: 600; color: #333;
+      cursor: pointer; transition: background .1s, border-color .1s;
+      user-select: none;
+    }
+    .page-nav-btn:hover { background: #f0f0f0; border-color: #bbb; }
+    .page-nav-btn.next { background: var(--accent); border-color: #d4bc00; color: #111; }
+    .page-nav-btn.next:hover { background: var(--accent2); }
+    .page-nav-btn:disabled { opacity: .35; pointer-events: none; }
+
+    /* ── 모바일 햄버거 ── */
+    .mobile-nav-toggle {
+      display: none; background: none; border: none;
+      font-size: 20px; cursor: pointer; padding: 4px 8px; color: var(--text);
+    }
+
+    /* ─── 반응형 ─── */
+    @media (max-width: 700px) {
+      .sidebar {
+        position: fixed; left: -240px; top: 54px; z-index: 200;
+        width: 240px; height: calc(100vh - 54px);
+        transition: left .25s; box-shadow: 4px 0 18px rgba(0,0,0,.12);
+      }
+      .sidebar.open { left: 0; }
+      .mobile-nav-toggle { display: block; }
+      .main { padding: 24px 20px 60px; }
+      .grid2, .mode-grid, .cost-summary { grid-template-columns: 1fr; }
       .mode-card.full { grid-column: auto; }
-      .files-card { padding: 20px 18px; }
-      .dl-card { padding: 22px 20px; }
+      .hero { padding: 24px 20px; }
+      .hero h1 { font-size: 22px; }
+      .btn-dl-sm span { display: none; }
     }
   </style>
 </head>
 <body>
-<div class="container">
 
-  <!-- 헤더 -->
-  <header class="header">
-    <div class="badge">Windows 전용 · 라이선스 필요</div>
-    <h1>네이버 블로그<br><em>자동 포스팅 프로그램</em></h1>
-    <p class="sub">콘텐츠 파일 작성 후 버튼 한 번으로<br>네이버 블로그에 자동 포스팅합니다.</p>
-    <div class="feat-row">
-      <span class="feat-pill">🤖 AI 글 자동 생성</span>
-      <span class="feat-pill">🖼 이미지 자동 생성</span>
-      <span class="feat-pill">✏️ SE3 에디터 자동 입력</span>
-      <span class="feat-pill new">✨ 스타일 탭 NEW</span>
-      <span class="feat-pill new">🌐 커뮤니티 NEW</span>
-    </div>
-  </header>
-
-  <!-- 다운로드 -->
-  <div class="dl-card">
-    <div class="ver-row">
-      <span class="ver-tag" id="ver-badge">확인 중…</span>
-      <span class="new-tag">최신 버전</span>
-    </div>
-    <h2>프로그램 다운로드</h2>
-    <p class="dl-desc">zip 파일을 받아 압축을 풀면 바로 실행할 수 있습니다. 별도 설치 과정이 없습니다.</p>
-    <a class="btn-dl" id="dl-btn" href="#">⬇&nbsp; 최신 버전 다운로드</a>
-    <span class="file-note" id="file-size">약 110 MB</span>
+<!-- ─── TOP HEADER ─── -->
+<header class="top-header">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <button class="mobile-nav-toggle" onclick="toggleSidebar()">☰</button>
+    <a class="logo" href="#">
+      <span class="logo-badge">BLOG</span>
+      네이버 자동 포스팅
+    </a>
   </div>
+  <div class="header-right">
+    <span class="ver-chip" id="ver-badge">확인 중…</span>
+    <a class="btn-dl-sm" id="dl-btn-top" href="#">⬇ <span>최신 버전 다운로드</span></a>
+  </div>
+</header>
 
-  <!-- 사용 가이드 탭 -->
-  <div class="tab-wrap">
-    <nav class="tab-nav" role="tablist">
-      <button class="tab-btn active" onclick="switchTab(0)" role="tab">① 초기 설정</button>
-      <button class="tab-btn" onclick="switchTab(1)" role="tab">② AI 글 생성</button>
-      <button class="tab-btn" onclick="switchTab(2)" role="tab">③ 이미지 생성</button>
-    </nav>
+<!-- ─── LAYOUT ─── -->
+<div class="layout">
 
-    <!-- 탭 1: 초기 설정 -->
-    <div class="tab-panel active">
-      <div class="card-title">초기 설정 안내</div>
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-section">시작하기</div>
+    <div class="nav-item active" onclick="goPage(0)" data-page="0">
+      <span class="nav-icon">🏠</span> 소개 &amp; 다운로드
+    </div>
+    <div class="nav-item" onclick="goPage(1)" data-page="1">
+      <span class="nav-icon">⚙️</span> 초기 설정
+    </div>
+
+    <div class="sidebar-section">주요 기능</div>
+    <div class="nav-item" onclick="goPage(2)" data-page="2">
+      <span class="nav-icon">🤖</span> AI 글 생성
+    </div>
+    <div class="nav-item" onclick="goPage(3)" data-page="3">
+      <span class="nav-icon">🖼</span> 이미지 생성
+    </div>
+    <div class="nav-item" onclick="goPage(4)" data-page="4">
+      <span class="nav-icon">✨</span> 스타일 탭
+      <span class="nav-new">NEW</span>
+    </div>
+    <div class="nav-item" onclick="goPage(5)" data-page="5">
+      <span class="nav-icon">🌐</span> 커뮤니티
+      <span class="nav-new">NEW</span>
+    </div>
+    <div class="nav-item" onclick="goPage(6)" data-page="6">
+      <span class="nav-icon">🔄</span> MD 변환기
+    </div>
+
+    <div class="sidebar-section">기타</div>
+    <div class="nav-item" onclick="goPage(7)" data-page="7">
+      <span class="nav-icon">📦</span> 자료 다운로드
+    </div>
+    <div class="nav-item" onclick="goPage(8)" data-page="8">
+      <span class="nav-icon">💰</span> API 비용 안내
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- ── PAGE 0: 소개 & 다운로드 ── -->
+    <section class="page active" id="page-0">
+      <div class="hero">
+        <div class="badge">Windows 전용 · 라이선스 필요</div>
+        <h1>네이버 블로그<br><em>자동 포스팅 프로그램</em></h1>
+        <p>콘텐츠 파일 작성 후 버튼 한 번으로<br>네이버 블로그에 자동 포스팅합니다.</p>
+        <div class="hero-actions">
+          <a class="btn-hero" id="dl-btn" href="#">⬇ 최신 버전 다운로드</a>
+          <span class="hero-size" id="file-size">약 110 MB · zip</span>
+        </div>
+        <div class="feat-pills">
+          <span class="feat-pill">🤖 AI 글 자동 생성</span>
+          <span class="feat-pill">🖼 이미지 자동 생성</span>
+          <span class="feat-pill">✏️ SE3 에디터 자동 입력</span>
+          <span class="feat-pill new">✨ 스타일 탭 NEW</span>
+          <span class="feat-pill new">🌐 커뮤니티 NEW</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">프로그램 구성</div>
+        <div class="folder-tree">
+          <span class="dir">naver-blog/</span><br>
+          &nbsp;&nbsp;├── <span class="file">naver-blog.exe</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">실행 파일</span><br>
+          &nbsp;&nbsp;├── <span class="file">convert.html</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">MD 변환기 + 스타일 템플릿 만들기</span><br>
+          &nbsp;&nbsp;└── <span class="dir">skills/styles/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">기본 스타일 템플릿 (계정 추가 시 자동 복사)</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">콘텐츠 폴더 구조</div>
+        <div class="folder-tree">
+          <span class="dir">콘텐츠/</span><br>
+          &nbsp;&nbsp;└── <span class="dir">{아이디}/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">계정별 폴더</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">prompt/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">AI 생성 설정 폴더</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="file">guide.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">브랜드 정보 (AI 생성 지침)</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="file">titles.txt</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">제목 목록</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="dir">styles/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">스타일 탭 + 섹션 템플릿</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="dir">YYYYMMDD/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">포스팅 단위 폴더</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">제목.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">본문</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">image_prompts.txt</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">이미지 프롬프트</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="file">image_1~4.png</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">생성된 이미지</span>
+        </div>
+      </div>
+
+      <div class="page-nav">
+        <div></div>
+        <button class="page-nav-btn next" onclick="goPage(1)">초기 설정 →</button>
+      </div>
+    </section>
+
+    <!-- ── PAGE 1: 초기 설정 ── -->
+    <section class="page" id="page-1">
+      <div class="page-header">
+        <div class="page-tag">시작하기</div>
+        <div class="page-title">⚙️ 초기 설정</div>
+        <div class="page-desc">처음 사용자를 위한 단계별 설정 안내입니다.</div>
+      </div>
+
       <ol class="steps">
         <li class="step">
           <div class="step-n">1</div>
           <div class="step-body">
-            <strong>zip 다운로드 → 바탕화면에 압축 해제</strong>
-            <span>위 버튼으로 zip 파일을 저장 후 바탕화면(또는 원하는 위치)에 압축 해제합니다.<br>
+            <strong>zip 다운로드 → 압축 해제</strong>
+            <span>상단 다운로드 버튼으로 zip 파일을 받아 바탕화면(또는 원하는 위치)에 압축 해제합니다.<br>
             <code>naver-blog/</code> 폴더가 생성됩니다.</span>
           </div>
         </li>
         <li class="step">
           <div class="step-n">2</div>
           <div class="step-body">
-            <strong>폴더 구조</strong>
-            <div class="folder-tree">
-              <span class="dir">naver-blog/</span><br>
-              &nbsp;&nbsp;├── <span class="file">naver-blog.exe</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">실행 파일</span><br>
-              &nbsp;&nbsp;├── <span class="file">convert.html</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">MD 변환기 + 스타일 템플릿 만들기</span><br>
-              &nbsp;&nbsp;└── <span class="dir">skills/styles/</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">기본 스타일 템플릿 (계정 추가 시 자동 복사)</span>
-            </div>
+            <strong>naver-blog.exe 실행</strong>
+            <span>폴더 안의 <code>naver-blog.exe</code>를 실행합니다.<br>
+            Windows Defender 경고가 뜨면 <strong>추가 정보 → 실행</strong>을 클릭하세요.</span>
           </div>
         </li>
         <li class="step">
           <div class="step-n">3</div>
           <div class="step-body">
-            <strong>라이선스 키 입력 → 계정 추가</strong>
-            <span>프로그램 실행 후 라이선스 키를 입력하고, <strong>[계정 추가]</strong> 버튼으로 네이버 아이디/비밀번호를 등록합니다.<br>
-            계정을 추가하면 <code>콘텐츠/{아이디}/prompt/</code> 폴더와 기본 스타일 파일이 자동 생성됩니다.</span>
+            <strong>라이선스 키 입력</strong>
+            <span>프로그램 실행 시 라이선스 키 입력창이 표시됩니다. 발급받은 키를 입력하고 확인합니다.</span>
           </div>
         </li>
         <li class="step">
           <div class="step-n">4</div>
+          <div class="step-body">
+            <strong>계정 추가</strong>
+            <span><strong>[계정 추가]</strong> 버튼 → 네이버 아이디 / 비밀번호 입력.<br>
+            블로그 ID가 네이버 아이디와 다를 경우 <strong>블로그 ID</strong>도 함께 입력합니다.<br>
+            예: <code>blog.naver.com/<strong>myid123</strong></code> → 블로그 ID는 <code>myid123</code></span>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-n">5</div>
           <div class="step-body">
             <strong>Gemini API 키 입력 (AI 생성 사용 시)</strong>
             <span>상단 <strong>[설정]</strong> 탭 → Gemini API 키를 입력합니다.<br>
@@ -398,103 +516,79 @@
           </div>
         </li>
         <li class="step">
-          <div class="step-n">5</div>
+          <div class="step-n">6</div>
           <div class="step-body">
-            <strong>Chrome이 자동 실행됩니다</strong>
-            <span>포스팅 시작 시 Chrome이 자동으로 열리고 저장된 계정으로 네이버에 로그인한 뒤 포스팅합니다.<br>
+            <strong>포스팅 실행</strong>
+            <span>계정 선택 → 날짜 폴더 선택 → <strong>[포스팅 시작]</strong>.<br>
+            Chrome이 자동으로 열리고, 네이버에 로그인 후 포스팅을 진행합니다.<br>
             첫 실행 시 Chrome 드라이버가 자동 설치됩니다.</span>
           </div>
         </li>
       </ol>
 
-      <div class="divider">블로그 ID 입력 (선택)</div>
-      <p style="font-size:13.5px;color:var(--muted);line-height:1.75;">
-        계정 추가 시 <strong>블로그 ID</strong>를 입력하면 정확한 포스팅이 가능합니다.<br>
-        예: <code>blog.naver.com/<strong>myid123</strong></code> → 블로그 ID는 <code>myid123</code><br>
-        비워두면 네이버 아이디를 그대로 블로그 주소로 사용합니다.
-      </p>
-    </div>
-
-    <!-- 탭 2: AI 글 생성 -->
-    <div class="tab-panel">
-      <div class="card-title">AI 글 생성 안내</div>
-      <p style="font-size:14.5px;color:var(--muted);line-height:1.7;margin-bottom:18px;">
-        제목 목록과 작성 지침을 준비해두면, Gemini AI가 제목을 한 개씩 꺼내<br>
-        블로그 글(MD)과 이미지 프롬프트를 <strong style="color:var(--text)">동시에 자동 생성</strong>합니다.
-      </p>
-
-      <div class="divider">준비 파일 — <code>prompt/</code> 폴더 안에 작성</div>
-      <div class="folder-tree">
-        <span class="dir">콘텐츠/{아이디}/</span><br>
-        &nbsp;&nbsp;└── <span class="dir">prompt/</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">guide.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">브랜드 정보 + 금지사항 ← 필수 (계정 추가 시 자동 생성)</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">titles.txt</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">제목 목록 (한 줄에 하나) ← 필수</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">style_tabs.json</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">스타일 탭 설정 ← 프로그램 UI에서 자동 저장</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="dir">styles/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">글 스타일 폴더 ← 계정 추가 시 자동 생성</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">기본/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">기본 스타일 탭</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="dir">도입부/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">공감형.md, 질문형.md …</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="dir">요금제/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">표형식.md, 리스트형식.md</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="dir">마무리/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">…</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="dir">부동산/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">추가 스타일 탭 (예시)</span>
+      <div class="page-nav">
+        <button class="page-nav-btn" onclick="goPage(0)">← 소개</button>
+        <button class="page-nav-btn next" onclick="goPage(2)">AI 글 생성 →</button>
       </div>
+    </section>
 
-      <div class="divider">새 기능 — 스타일 탭 · 커뮤니티 (v1.4.25)</div>
-      <div class="spec-grid">
-        <div class="spec-card">
-          <div class="spec-title">📁 스타일 탭 (프로필)</div>
-          <div class="spec-desc">블로그 주제별로 독립된 스타일 프로필을 만들 수 있습니다.<br>탭 추가/이름 변경/삭제 — 스타일 탭 UI에서 관리.</div>
-        </div>
-        <div class="spec-card">
-          <div class="spec-title">📋 섹션 구성 UI</div>
-          <div class="spec-desc">섹션 On/Off 및 ↑↓ 순서 변경.<br>작업 저장 시 현재 섹션 구성이 함께 저장됩니다.</div>
-        </div>
-        <div class="spec-card">
-          <div class="spec-title">✏️ 문체 선택</div>
-          <div class="spec-desc">랜덤 / 친근한 / 전문적 / 간결한 중 선택.<br>작업셋트마다 다른 문체 저장 가능.</div>
-        </div>
-        <div class="spec-card">
-          <div class="spec-title">🌐 커뮤니티 템플릿</div>
-          <div class="spec-desc">다른 사용자가 공유한 스타일 템플릿을 받아 내 스타일 폴더에 바로 추가할 수 있습니다.</div>
+    <!-- ── PAGE 2: AI 글 생성 ── -->
+    <section class="page" id="page-2">
+      <div class="page-header">
+        <div class="page-tag">주요 기능</div>
+        <div class="page-title">🤖 AI 글 생성</div>
+        <div class="page-desc">
+          제목 목록과 작성 지침을 준비해두면 Gemini AI가 제목을 한 개씩 꺼내<br>
+          블로그 글(MD)과 이미지 프롬프트를 <strong>동시에 자동 생성</strong>합니다.
         </div>
       </div>
 
-      <div class="divider">titles.txt 예시</div>
+      <div class="page-divider">준비 파일</div>
+      <div class="grid2">
+        <div class="g-card">
+          <div class="g-title">📄 guide.md — 필수</div>
+          <div class="g-desc">브랜드 정보, 요금제, 타겟 독자, 금지사항 등을 작성합니다.<br>계정 추가 시 빈 파일이 자동 생성됩니다.</div>
+        </div>
+        <div class="g-card">
+          <div class="g-title">📋 titles.txt — 필수</div>
+          <div class="g-desc">제목을 한 줄에 하나씩 작성합니다. 프로그램이 순서대로 꺼내 사용합니다.</div>
+        </div>
+      </div>
       <div class="folder-tree">
         가경동 선불폰 개통 어떻게 하나요?<br>
         북가좌동 선불폰 KT망 vs LGU+망<br>
         명동 선불유심 약정 없이 쓰기 좋은 이유<br>
-        신정동 선불폰 셀프개통 방법<br>
         <span class="note">… (한 줄에 제목 하나씩)</span>
       </div>
 
-      <div class="divider">실행 흐름</div>
-      <ol class="steps" style="margin-top:4px;">
+      <div class="page-divider">실행 흐름</div>
+      <ol class="steps">
         <li class="step">
           <div class="step-n">1</div>
           <div class="step-body">
-            <strong>titles.txt에서 미사용 제목 1개 선택</strong>
-            <span>순서대로 또는 무작위로 꺼냅니다. 모두 사용하면 알림이 표시됩니다.</span>
+            <strong>미사용 제목 1개 선택</strong>
+            <span>titles.txt에서 순서대로(또는 무작위로) 꺼냅니다. 모두 사용하면 알림이 표시됩니다.</span>
           </div>
         </li>
         <li class="step">
           <div class="step-n">2</div>
           <div class="step-body">
-            <strong>guide.md + 스타일 탭 템플릿 기반으로 Gemini가 글 작성</strong>
-            <span>제목 + guide.md + 선택된 스타일 탭의 섹션 템플릿 → Gemini API → 블로그 본문 생성.</span>
+            <strong>Gemini가 블로그 글 작성</strong>
+            <span>제목 + guide.md + 선택된 스타일 탭의 섹션 템플릿 → Gemini API → 블로그 본문(MD) 생성.</span>
           </div>
         </li>
         <li class="step">
           <div class="step-n">3</div>
           <div class="step-body">
-            <strong>이미지 프롬프트 자동 생성</strong>
-            <span>블로그 본문의 이미지 배치([이미지 1]~[이미지 4])를 분석해 이미지 프롬프트를 자동 작성합니다.</span>
+            <strong>이미지 프롬프트 자동 작성</strong>
+            <span>본문의 [이미지 1]~[이미지 4] 배치를 분석해 각 이미지 프롬프트 + 썸네일 프롬프트를 자동 작성합니다.</span>
           </div>
         </li>
         <li class="step">
           <div class="step-n">4</div>
           <div class="step-body">
-            <strong>날짜 폴더 자동 생성 → 파일 저장</strong>
-            <span><code>YYYYMMDD/</code> 폴더가 자동 생성되고 <code>{제목}.md</code> + <code>image_prompts.txt</code>가 저장됩니다.<br>
+            <strong>날짜 폴더 자동 생성</strong>
+            <span><code>YYYYMMDD/</code> 폴더가 생성되고 <code>{제목}.md</code> + <code>image_prompts.txt</code>가 저장됩니다.<br>
             같은 날 여러 개 생성 시 <code>YYYYMMDD_01/</code>, <code>YYYYMMDD_02/</code> 형식으로 번호가 붙습니다.</span>
           </div>
         </li>
@@ -502,36 +596,43 @@
           <div class="step-n">5</div>
           <div class="step-body">
             <strong>이미지 생성 → 포스팅 실행</strong>
-            <span>생성된 날짜 폴더를 선택하고 <strong>[포스팅 시작]</strong>을 누르면<br>
-            이미지 자동 생성 → 블로그 자동 업로드까지 한 번에 진행됩니다.</span>
+            <span>날짜 폴더를 선택하고 <strong>[포스팅 시작]</strong>을 누르면 이미지 생성 → 블로그 업로드까지 한 번에 진행됩니다.</span>
           </div>
         </li>
       </ol>
-      <div class="tip-box">
-        <strong>guide.md 준비</strong> — 계정을 처음 추가하면 <code>guide.md</code>가 자동 생성됩니다.<br>
-        아래 <strong>자료 다운로드</strong>에서 <code>guide_만들기_프롬프트.md</code>를 받아 ChatGPT·Claude·Gemini에 붙여넣고<br>
-        내 서비스 정보를 채우면 완성된 guide.md가 자동으로 생성됩니다.<br>
-        <span style="font-size:13px;color:#2a7a40;">💡 포맷·구조 지시는 넣지 마세요 — 섹션 스타일(styles/)이 담당합니다.</span>
+
+      <div class="tip">
+        <strong>guide.md 작성 팁</strong> — 자료 다운로드에서 <code>guide_만들기_프롬프트.md</code>를 받아<br>
+        ChatGPT·Claude·Gemini에 붙여넣고 서비스 정보를 채우면 guide.md가 자동 완성됩니다.<br>
+        <span style="font-size:13px;color:#2a7a40;">💡 "표로 정리해줘" 같은 포맷 지시는 넣지 마세요 — styles/ 폴더가 담당합니다.</span>
       </div>
-    </div>
 
-    <!-- 탭 3: 이미지 생성 -->
-    <div class="tab-panel">
-      <div class="card-title">이미지 생성 안내</div>
-      <p style="font-size:14.5px;color:var(--muted);margin-bottom:16px;line-height:1.7;">
-        날짜 폴더에 <code>image_prompts.txt</code>를 넣으면 Gemini API로 이미지를 자동 생성합니다.<br>
-        AI 글 생성 모드를 사용하면 이미지 프롬프트도 자동으로 작성됩니다.
-      </p>
+      <div class="page-nav">
+        <button class="page-nav-btn" onclick="goPage(1)">← 초기 설정</button>
+        <button class="page-nav-btn next" onclick="goPage(3)">이미지 생성 →</button>
+      </div>
+    </section>
 
-      <div class="divider">생성 방식 3가지</div>
+    <!-- ── PAGE 3: 이미지 생성 ── -->
+    <section class="page" id="page-3">
+      <div class="page-header">
+        <div class="page-tag">주요 기능</div>
+        <div class="page-title">🖼 이미지 생성</div>
+        <div class="page-desc">
+          날짜 폴더에 <code>image_prompts.txt</code>를 넣으면 Gemini API로 이미지를 자동 생성합니다.<br>
+          AI 글 생성 모드를 사용하면 프롬프트도 자동으로 작성됩니다.
+        </div>
+      </div>
+
+      <div class="page-divider">생성 방식 3가지</div>
       <div class="mode-grid">
         <div class="mode-card full">
           <div class="mode-label">⭐ 추천 — Grid 방식</div>
           <div class="mode-title">2×2 그리드 → 자동 분할</div>
           <div class="mode-desc" style="margin-bottom:12px;">이미지 4개를 하나의 그리드로 한 번에 생성 후 자동 분할. API 1회 호출 — 빠르고 경제적.</div>
-          <div class="grid-visual-wrap">
+          <div class="grid-vis">
             <div>
-              <div style="font-size:12px;color:var(--muted);text-align:center;margin-bottom:5px;">Gemini 생성 (1장)</div>
+              <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:4px;">Gemini 생성 (1장)</div>
               <div class="grid-box">
                 <div class="grid-cell">이미지1</div>
                 <div class="grid-cell">이미지2</div>
@@ -541,12 +642,12 @@
             </div>
             <div class="grid-arrow">→</div>
             <div>
-              <div style="font-size:12px;color:var(--muted);text-align:center;margin-bottom:5px;">자동 분할 (4장)</div>
+              <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:4px;">자동 분할 (4장)</div>
               <div class="grid-split">
-                <div class="grid-split-cell">image_1<span class="cell-label">.png</span></div>
-                <div class="grid-split-cell">image_2<span class="cell-label">.png</span></div>
-                <div class="grid-split-cell">image_3<span class="cell-label">.png</span></div>
-                <div class="grid-split-cell">image_4<span class="cell-label">.png</span></div>
+                <div class="grid-split-cell">image_1<span class="cell-sub">.png</span></div>
+                <div class="grid-split-cell">image_2<span class="cell-sub">.png</span></div>
+                <div class="grid-split-cell">image_3<span class="cell-sub">.png</span></div>
+                <div class="grid-split-cell">image_4<span class="cell-sub">.png</span></div>
               </div>
             </div>
           </div>
@@ -563,7 +664,7 @@
         </div>
       </div>
 
-      <div class="divider" style="margin-top:20px;">image_prompts.txt 작성 형식</div>
+      <div class="page-divider">image_prompts.txt 작성 형식</div>
       <div class="folder-tree">
         [이미지 1]<br>
         프롬프트: Flat design infographic showing a SIM card...<br>
@@ -578,191 +679,355 @@
         텍스트: 선불폰, 개통 가이드
       </div>
 
-      <div class="info-box blue" style="margin-top:14px;">
+      <div class="info blue">
         💡 <strong>프롬프트는 영어, 텍스트 필드는 한글</strong><br>
         프롬프트: 영어 (Flat design, white background, no watermark 포함 권장)<br>
         텍스트: 이미지에 삽입할 한글 키워드/수치 (쉼표 구분)
       </div>
-    </div>
-  </div>
 
-  <!-- 스타일 탭 & 폴더 시스템 -->
-  <div class="feature-card">
-    <h3>✨ 스타일 탭 &amp; 글 스타일 폴더 시스템</h3>
-    <p>
-      블로그 주제마다 <strong>스타일 탭(프로필)</strong>을 추가해 독립적인 섹션 구성을 관리할 수 있습니다.<br>
-      각 탭의 <code>styles/</code> 폴더에 .md 파일을 추가하면 AI 글 생성 시 <strong>랜덤 선택</strong>해 글 스타일을 다양하게 만듭니다.
-    </p>
-
-    <div class="divider">guide.md vs styles/ 역할 분리</div>
-    <div style="display:flex;gap:14px;margin-bottom:14px;flex-wrap:wrap;">
-      <div style="flex:1;min-width:200px;background:var(--blue-bg);border:1px solid var(--blue-bd);border-radius:10px;padding:14px;">
-        <div style="font-weight:800;color:var(--blue);margin-bottom:6px;font-size:14px;">📄 guide.md — "무엇을"</div>
-        <ul style="font-size:13px;color:#333;line-height:1.9;padding-left:18px;">
-          <li>브랜드명, URL, 서비스명</li>
-          <li>요금제 정보, 가격, 혜택</li>
-          <li>타겟 독자, 금지사항</li>
-          <li>브랜드 특징 (USP)</li>
-        </ul>
+      <div class="page-nav">
+        <button class="page-nav-btn" onclick="goPage(2)">← AI 글 생성</button>
+        <button class="page-nav-btn next" onclick="goPage(4)">스타일 탭 →</button>
       </div>
-      <div style="flex:1;min-width:200px;background:var(--green-bg);border:1px solid var(--green-bd);border-radius:10px;padding:14px;">
-        <div style="font-weight:800;color:var(--green);margin-bottom:6px;font-size:14px;">📁 styles/ — "어떻게"</div>
-        <ul style="font-size:13px;color:#333;line-height:1.9;padding-left:18px;">
-          <li>도입부 스타일 (공감/질문/상황)</li>
-          <li>요금제 표시 형식 (표/리스트)</li>
-          <li>개통 순서 구성 방식</li>
-          <li>전체 구조, 문체, 섹션 포맷</li>
-        </ul>
-      </div>
-    </div>
-    <div class="info-box warn">
-      <strong>⚠️ guide.md에 포맷 지시를 넣지 마세요.</strong><br>
-      "표로 정리해줘", "Q&amp;A 형식으로 써줘" 같은 내용은 styles/ 폴더에 .md로 추가하세요.<br>
-      guide.md와 styles/가 충돌하면 글 품질이 저하됩니다.
-    </div>
+    </section>
 
-    <div class="divider">스타일 파일 관리 방법</div>
-    <ol style="font-size:13.5px;color:#333;line-height:2.2;padding-left:20px;">
-      <li>앱 <strong>[스타일]</strong> 탭 → 스타일 프로필(탭) 추가/전환</li>
-      <li>섹션 목록에서 <strong>📂 폴더</strong> 버튼으로 탐색기 열기</li>
-      <li>폴더 안의 .md 파일을 수정하거나 새 .md 파일 추가</li>
-      <li><strong>[🌐 커뮤니티 템플릿]</strong> 버튼으로 다른 사용자 템플릿을 직접 가져올 수도 있습니다</li>
-    </ol>
-  </div>
-
-  <!-- MD 변환기 -->
-  <div class="feature-card">
-    <h3>🔄 MD 변환기 (convert.html)</h3>
-    <p>
-      Claude나 Gemini로 만든 MD를 프로그램 규칙에 맞게 자동 교정합니다.<br>
-      서버 불필요 — 브라우저에서 바로 실행됩니다. (zip 파일 안에 포함)
-    </p>
-    <div class="spec-grid">
-      <div class="spec-card">
-        <div class="spec-title">탭 1 — MD 변환기</div>
-        <div class="spec-desc">
-          HTML 태그 → MD 자동 변환<br>
-          이미지 배치 자동 교정<br>
-          빈 불릿·연속 빈 줄 제거<br>
-          이중 헤딩 정규화
+    <!-- ── PAGE 4: 스타일 탭 ── -->
+    <section class="page" id="page-4">
+      <div class="page-header">
+        <div class="page-tag">주요 기능 · NEW v1.4.25</div>
+        <div class="page-title">✨ 스타일 탭 (프로필)</div>
+        <div class="page-desc">
+          블로그 주제마다 독립된 스타일 프로필을 만들고,<br>
+          각 탭의 섹션 템플릿(.md)을 랜덤 선택해 글 스타일을 다양하게 유지합니다.
         </div>
       </div>
-      <div class="spec-card">
-        <div class="spec-title">탭 2 — 스타일 템플릿 만들기</div>
-        <div class="spec-desc">
-          섹션 설명을 입력하면 Gemini가 스타일 템플릿 .md 파일을 자동 생성합니다.<br>
-          생성 후 바로 다운로드 가능.
+
+      <div class="page-divider">스타일 탭이란?</div>
+      <div class="grid2">
+        <div class="g-card">
+          <div class="g-title">탭 예시</div>
+          <div class="g-desc">기본 / 부동산 / 여행 / 음식<br>탭마다 독립적인 섹션 구성 + 스타일 파일을 가집니다.</div>
+        </div>
+        <div class="g-card">
+          <div class="g-title">탭 관리</div>
+          <div class="g-desc">앱 [스타일] 탭에서 추가 / 이름 변경 / 삭제.<br>탭 전환 시 섹션 목록이 해당 탭 설정으로 바뀝니다.</div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- 자료 다운로드 -->
-  <div class="files-card">
-    <h3>📦 자료 다운로드</h3>
-    <p class="sub">가이드 작성 및 라이선스 관리에 필요한 파일들입니다.</p>
-
-    <div class="file-row">
-      <div class="file-icon">📝</div>
-      <div class="file-info">
-        <div class="file-name">guide_만들기_프롬프트.md</div>
-        <div class="file-desc">guide.md 자동 생성용 프롬프트 — ChatGPT·Claude·Gemini에 붙여넣고 서비스 정보 입력 → guide.md 완성</div>
+      <div class="page-divider">폴더 구조</div>
+      <div class="folder-tree">
+        <span class="dir">prompt/styles/</span><br>
+        &nbsp;&nbsp;├── <span class="dir">기본/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">기본 스타일 탭</span><br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="dir">도입부/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">공감형.md, 질문형.md …</span><br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="dir">요금제/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">표형식.md, 리스트형식.md</span><br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="dir">개념_장점/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">장점나열형.md …</span><br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="dir">마무리/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">요약형.md, 행동유도형.md</span><br>
+        &nbsp;&nbsp;└── <span class="dir">부동산/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">추가 스타일 탭 (예시)</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="dir">도입부/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="note">부동산용 도입부 템플릿</span>
       </div>
-      <a class="btn-file" href="./files/guide_만들기_프롬프트.md" download>⬇ 다운로드</a>
-    </div>
 
-    <div class="file-row">
-      <div class="file-icon">🔄</div>
-      <div class="file-info">
-        <div class="file-name">convert.html</div>
-        <div class="file-desc">MD 변환기 + 스타일 템플릿 만들기 — 브라우저에서 바로 실행 (서버 불필요)</div>
+      <div class="page-divider">guide.md vs styles/ 역할 분리</div>
+      <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:200px;background:var(--blue-bg);border:1px solid var(--blue-bd);border-radius:10px;padding:14px;">
+          <div style="font-weight:800;color:var(--blue);margin-bottom:8px;">📄 guide.md — "무엇을"</div>
+          <ul style="font-size:13px;color:#333;line-height:1.9;padding-left:16px;">
+            <li>브랜드명, URL, 서비스명</li>
+            <li>요금제 정보, 가격, 혜택</li>
+            <li>타겟 독자, 금지사항</li>
+          </ul>
+        </div>
+        <div style="flex:1;min-width:200px;background:var(--green-bg);border:1px solid var(--green-bd);border-radius:10px;padding:14px;">
+          <div style="font-weight:800;color:var(--green);margin-bottom:8px;">📁 styles/ — "어떻게"</div>
+          <ul style="font-size:13px;color:#333;line-height:1.9;padding-left:16px;">
+            <li>도입부 스타일 (공감/질문/상황)</li>
+            <li>요금제 표시 형식 (표/리스트)</li>
+            <li>전체 구조, 문체, 섹션 포맷</li>
+          </ul>
+        </div>
       </div>
-      <a class="btn-file" href="./files/convert.html" download>⬇ 다운로드</a>
-    </div>
-
-    <div class="file-row">
-      <div class="file-icon">🗝️</div>
-      <div class="file-info">
-        <div class="file-name">코드목록.xlsx</div>
-        <div class="file-desc">라이선스 코드 관리용 엑셀 — 이름·코드 목록 작성 후 배포용</div>
+      <div class="info warn">
+        <strong>⚠️ guide.md에 포맷 지시를 넣지 마세요.</strong><br>
+        "표로 정리해줘", "Q&amp;A 형식으로 써줘" 같은 내용은 styles/ 폴더의 .md 파일에 작성하세요.<br>
+        guide.md와 styles/가 충돌하면 글 품질이 저하됩니다.
       </div>
-      <a class="btn-file yellow" href="./files/코드목록.xlsx" download>⬇ 다운로드</a>
-    </div>
-  </div>
 
-  <!-- API 비용 안내 -->
-  <div class="card">
-    <div class="card-title">API 비용 안내</div>
-    <p style="font-size:13.5px;color:var(--muted);margin-bottom:16px;line-height:1.65;">
-      이미지·글 생성은 <strong>Google Gemini API</strong>를 사용합니다.<br>
-      아래는 포스팅 1개 기준 예상 비용입니다 (환율 1,488원/달러 기준).
-    </p>
+      <div class="page-divider">스타일 파일 관리 방법</div>
+      <ol style="font-size:14px;color:#333;line-height:2.2;padding-left:20px;">
+        <li>앱 <strong>[스타일]</strong> 탭 → 스타일 프로필(탭) 추가/전환</li>
+        <li>섹션 목록에서 <strong>📂 폴더</strong> 버튼 클릭 → 탐색기로 해당 폴더 열기</li>
+        <li>폴더 안의 .md 파일을 메모장 등으로 수정하거나 새 .md 파일 추가</li>
+        <li><strong>[🌐 커뮤니티 템플릿]</strong> 버튼으로 다른 사용자 템플릿을 가져올 수도 있습니다</li>
+      </ol>
 
-    <table class="cost-table">
-      <thead>
-        <tr>
-          <th>항목</th>
-          <th>모델</th>
-          <th>API 호출</th>
-          <th style="text-align:right">비용</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>글 + 이미지 프롬프트 생성 <span class="cost-small">(AI 생성 모드)</span></td>
-          <td><span class="cost-small">Gemini 2.5 Flash Preview</span></td>
-          <td>텍스트 2회</td>
-          <td style="text-align:right;font-weight:600;">~8원</td>
-        </tr>
-        <tr>
-          <td>이미지 생성 — <strong>Grid 모드</strong> <span class="cost-small">(추천)</span></td>
-          <td><span class="cost-small">Gemini Flash Image</span></td>
-          <td>이미지 1회</td>
-          <td style="text-align:right;font-weight:600;">~100원</td>
-        </tr>
-        <tr>
-          <td>이미지 생성 — <strong>개별 모드</strong></td>
-          <td><span class="cost-small">Gemini Flash Image</span></td>
-          <td>이미지 4회</td>
-          <td style="text-align:right;font-weight:600;">~400원</td>
-        </tr>
-        <tr>
-          <td>썸네일 생성 <span class="cost-small">(선택)</span></td>
-          <td><span class="cost-small">Gemini Flash Image</span></td>
-          <td>이미지 1회</td>
-          <td style="text-align:right;font-weight:600;">~100원</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="cost-summary">
-      <div class="cost-box" style="background:var(--green-bg);border:1px solid var(--green-bd);">
-        <div class="cost-box-label" style="color:var(--green);">추천 조합</div>
-        <div class="cost-box-subtitle">AI생성 + Grid</div>
-        <div class="cost-box-price" style="color:var(--green);">~108원<span class="cost-box-unit" style="color:var(--muted);"> / 포스팅</span></div>
+      <div class="page-nav">
+        <button class="page-nav-btn" onclick="goPage(3)">← 이미지 생성</button>
+        <button class="page-nav-btn next" onclick="goPage(5)">커뮤니티 →</button>
       </div>
-      <div class="cost-box" style="background:var(--blue-bg);border:1px solid var(--blue-bd);">
-        <div class="cost-box-label" style="color:var(--blue);">MD파일 + Grid</div>
-        <div class="cost-box-subtitle">기존 글 활용 시</div>
-        <div class="cost-box-price" style="color:var(--blue);">~100원<span class="cost-box-unit" style="color:var(--muted);"> / 포스팅</span></div>
+    </section>
+
+    <!-- ── PAGE 5: 커뮤니티 ── -->
+    <section class="page" id="page-5">
+      <div class="page-header">
+        <div class="page-tag">주요 기능 · NEW v1.4.25</div>
+        <div class="page-title">🌐 커뮤니티 템플릿</div>
+        <div class="page-desc">
+          라이선스 사용자들끼리 스타일 템플릿(.md)을 공유하는 앱 내 게시판입니다.<br>
+          마음에 드는 템플릿을 내 스타일 폴더에 바로 추가할 수 있습니다.
+        </div>
       </div>
-    </div>
 
-    <div class="info-box warn">
-      <strong>100개 포스팅 기준</strong> — AI생성+Grid: <strong>약 10,800원</strong> / AI생성+Grid+썸네일: <strong>약 20,800원</strong>
-    </div>
-  </div>
+      <div class="page-divider">접근 방법</div>
+      <div class="info blue">
+        앱 <strong>[스타일]</strong> 탭 하단 <strong>[🌐 커뮤니티 템플릿]</strong> 버튼 클릭
+      </div>
 
+      <div class="page-divider">주요 기능</div>
+      <div class="grid2">
+        <div class="g-card">
+          <div class="g-title">📥 템플릿 가져오기</div>
+          <div class="g-desc">
+            게시물 클릭 → 미리보기(MD 원문 + 네이버 스타일 렌더링) → <strong>[+ 내 스타일에 추가]</strong><br>
+            현재 활성 탭의 해당 카테고리 폴더에 자동 저장됩니다.
+          </div>
+        </div>
+        <div class="g-card">
+          <div class="g-title">📤 템플릿 공유하기</div>
+          <div class="g-desc">
+            <strong>[공유하기]</strong> 버튼 → 제목·카테고리·내용 입력 → 업로드.<br>
+            라이선스 키가 자동 첨부되어 별도 로그인이 필요 없습니다.
+          </div>
+        </div>
+        <div class="g-card">
+          <div class="g-title">🔍 카테고리 필터</div>
+          <div class="g-desc">도입부 / 요금제 / 개념_장점 / 마무리 등 카테고리별로 필터링해 원하는 템플릿을 찾을 수 있습니다.</div>
+        </div>
+        <div class="g-card">
+          <div class="g-title">👁 미리보기</div>
+          <div class="g-desc">MD 원문 확인 + 브라우저에서 네이버 스타일 렌더링 미리보기가 가능합니다.</div>
+        </div>
+      </div>
+
+      <div class="page-nav">
+        <button class="page-nav-btn" onclick="goPage(4)">← 스타일 탭</button>
+        <button class="page-nav-btn next" onclick="goPage(6)">MD 변환기 →</button>
+      </div>
+    </section>
+
+    <!-- ── PAGE 6: MD 변환기 ── -->
+    <section class="page" id="page-6">
+      <div class="page-header">
+        <div class="page-tag">도구</div>
+        <div class="page-title">🔄 MD 변환기 (convert.html)</div>
+        <div class="page-desc">
+          Claude나 Gemini로 만든 MD를 프로그램 규칙에 맞게 자동 교정하는 오프라인 도구입니다.<br>
+          서버 불필요 — 브라우저에서 더블클릭으로 바로 실행됩니다.
+        </div>
+      </div>
+
+      <div class="info green">
+        📥 <code>convert.html</code>은 프로그램 zip 파일 안에 포함되어 있습니다.
+      </div>
+
+      <div class="page-divider">기능 2가지</div>
+      <div class="grid2">
+        <div class="g-card">
+          <div class="g-title">탭 1 — MD 변환기</div>
+          <div class="g-desc" style="line-height:1.9;">
+            • HTML 태그 → MD 자동 변환<br>
+            • 이미지 배치 앞에 <code>&gt;</code> 자동 추가<br>
+            • 이중 헤딩 정규화<br>
+            • 빈 불릿·연속 빈 줄 제거<br>
+            • <code>---</code> 구분선 자동 교정
+          </div>
+        </div>
+        <div class="g-card">
+          <div class="g-title">탭 2 — 스타일 템플릿 만들기</div>
+          <div class="g-desc" style="line-height:1.9;">
+            섹션 설명을 입력하면 Gemini가 스타일 템플릿 .md 파일을 자동 생성합니다.<br><br>
+            생성된 파일을 바로 다운로드해 styles/ 폴더에 넣으면 됩니다.
+          </div>
+        </div>
+      </div>
+
+      <div class="page-divider">사용 방법</div>
+      <ol class="steps">
+        <li class="step">
+          <div class="step-n">1</div>
+          <div class="step-body">
+            <strong>convert.html 열기</strong>
+            <span><code>naver-blog/convert.html</code>을 브라우저로 열거나 더블클릭합니다.</span>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-n">2</div>
+          <div class="step-body">
+            <strong>MD 변환기 탭 — AI 생성 MD 붙여넣기</strong>
+            <span>ChatGPT나 Claude가 만든 MD를 왼쪽 텍스트박스에 붙여넣고 <strong>[변환]</strong>을 클릭합니다.</span>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-n">3</div>
+          <div class="step-body">
+            <strong>교정된 MD 다운로드</strong>
+            <span>오른쪽에 교정된 결과가 표시됩니다. <strong>[다운로드]</strong>로 .md 파일을 저장합니다.</span>
+          </div>
+        </li>
+      </ol>
+
+      <div class="page-nav">
+        <button class="page-nav-btn" onclick="goPage(5)">← 커뮤니티</button>
+        <button class="page-nav-btn next" onclick="goPage(7)">자료 다운로드 →</button>
+      </div>
+    </section>
+
+    <!-- ── PAGE 7: 자료 다운로드 ── -->
+    <section class="page" id="page-7">
+      <div class="page-header">
+        <div class="page-tag">기타</div>
+        <div class="page-title">📦 자료 다운로드</div>
+        <div class="page-desc">가이드 작성 및 라이선스 관리에 필요한 파일들입니다.</div>
+      </div>
+
+      <div class="card" style="margin-bottom:0;">
+        <div class="file-row">
+          <div class="file-icon">📝</div>
+          <div class="file-info">
+            <div class="file-name">guide_만들기_프롬프트.md</div>
+            <div class="file-desc">guide.md 자동 생성용 프롬프트 — ChatGPT·Claude·Gemini에 붙여넣고 서비스 정보 입력 → guide.md 완성</div>
+          </div>
+          <a class="btn-file" href="./files/guide_만들기_프롬프트.md" download>⬇ 다운로드</a>
+        </div>
+        <div class="file-row">
+          <div class="file-icon">🔄</div>
+          <div class="file-info">
+            <div class="file-name">convert.html</div>
+            <div class="file-desc">MD 변환기 + 스타일 템플릿 만들기 — 브라우저에서 바로 실행 (서버 불필요)</div>
+          </div>
+          <a class="btn-file" href="./files/convert.html" download>⬇ 다운로드</a>
+        </div>
+        <div class="file-row">
+          <div class="file-icon">🗝️</div>
+          <div class="file-info">
+            <div class="file-name">코드목록.xlsx</div>
+            <div class="file-desc">라이선스 코드 관리용 엑셀 — 이름·코드 목록 작성 후 배포용</div>
+          </div>
+          <a class="btn-file hl" href="./files/코드목록.xlsx" download>⬇ 다운로드</a>
+        </div>
+      </div>
+
+      <div class="page-nav">
+        <button class="page-nav-btn" onclick="goPage(6)">← MD 변환기</button>
+        <button class="page-nav-btn next" onclick="goPage(8)">API 비용 안내 →</button>
+      </div>
+    </section>
+
+    <!-- ── PAGE 8: API 비용 ── -->
+    <section class="page" id="page-8">
+      <div class="page-header">
+        <div class="page-tag">기타</div>
+        <div class="page-title">💰 API 비용 안내</div>
+        <div class="page-desc">
+          이미지·글 생성은 <strong>Google Gemini API</strong>를 사용합니다.<br>
+          아래는 포스팅 1개 기준 예상 비용입니다 (환율 1,488원/달러 기준).
+        </div>
+      </div>
+
+      <table class="cost-table">
+        <thead>
+          <tr>
+            <th>항목</th>
+            <th class="cost-center">모델</th>
+            <th class="cost-center">API 호출</th>
+            <th style="text-align:right">비용</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>글 + 이미지 프롬프트 생성 <span class="cost-sub">(AI 생성 모드)</span></td>
+            <td class="cost-center"><span class="cost-sub">Gemini 2.5 Flash Preview</span></td>
+            <td class="cost-center">텍스트 2회</td>
+            <td class="cost-num">~8원</td>
+          </tr>
+          <tr>
+            <td>이미지 생성 — <strong>Grid 모드</strong> <span class="cost-sub">(추천)</span></td>
+            <td class="cost-center"><span class="cost-sub">Gemini Flash Image</span></td>
+            <td class="cost-center">이미지 1회</td>
+            <td class="cost-num">~100원</td>
+          </tr>
+          <tr>
+            <td>이미지 생성 — <strong>개별 모드</strong></td>
+            <td class="cost-center"><span class="cost-sub">Gemini Flash Image</span></td>
+            <td class="cost-center">이미지 4회</td>
+            <td class="cost-num">~400원</td>
+          </tr>
+          <tr>
+            <td>썸네일 생성 <span class="cost-sub">(선택)</span></td>
+            <td class="cost-center"><span class="cost-sub">Gemini Flash Image</span></td>
+            <td class="cost-center">이미지 1회</td>
+            <td class="cost-num">~100원</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="cost-summary">
+        <div class="cost-box" style="background:var(--green-bg);border:1px solid var(--green-bd);">
+          <div class="cost-box-lbl" style="color:var(--green);">추천 조합</div>
+          <div class="cost-box-sub">AI생성 + Grid</div>
+          <div class="cost-box-price" style="color:var(--green);">~108원<span class="cost-box-unit" style="color:var(--muted);"> / 포스팅</span></div>
+        </div>
+        <div class="cost-box" style="background:var(--blue-bg);border:1px solid var(--blue-bd);">
+          <div class="cost-box-lbl" style="color:var(--blue);">MD파일 + Grid</div>
+          <div class="cost-box-sub">기존 글 활용 시</div>
+          <div class="cost-box-price" style="color:var(--blue);">~100원<span class="cost-box-unit" style="color:var(--muted);"> / 포스팅</span></div>
+        </div>
+      </div>
+
+      <div class="info warn">
+        <strong>100개 포스팅 기준</strong> — AI생성+Grid: <strong>약 10,800원</strong> / AI생성+Grid+썸네일: <strong>약 20,800원</strong>
+      </div>
+
+      <div class="page-nav">
+        <button class="page-nav-btn" onclick="goPage(7)">← 자료 다운로드</button>
+        <div></div>
+      </div>
+    </section>
+
+  </main>
 </div>
 
-<footer>© 2026 Naver Blog Auto Poster</footer>
+<!-- 모바일 오버레이 -->
+<div id="overlay" onclick="toggleSidebar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:199;"></div>
 
 <script>
-  function switchTab(idx) {
-    document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
-    document.querySelectorAll('.tab-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
+  /* ─── 페이지 전환 ─── */
+  const PAGES = document.querySelectorAll('.page');
+  const NAVS  = document.querySelectorAll('.nav-item');
+
+  function goPage(idx) {
+    PAGES.forEach((p, i) => p.classList.toggle('active', i === idx));
+    NAVS.forEach((n, i)  => n.classList.toggle('active', i === idx));
+    window.scrollTo({ top: 0 });
+    // 모바일 사이드바 닫기
+    if (window.innerWidth <= 700) closeSidebar();
   }
 
+  /* ─── 모바일 사이드바 ─── */
+  function toggleSidebar() {
+    const s = document.getElementById('sidebar');
+    const o = document.getElementById('overlay');
+    if (s.classList.contains('open')) {
+      closeSidebar();
+    } else {
+      s.classList.add('open');
+      o.style.display = 'block';
+    }
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').style.display = 'none';
+  }
+
+  /* ─── GitHub Releases API ─── */
   (async () => {
     try {
       const data = await fetch(
@@ -776,12 +1041,16 @@
       const sizeMB = asset ? (asset.size / 1024 / 1024).toFixed(0) : null;
 
       if (tag)    document.getElementById('ver-badge').textContent = tag;
-      if (url)    document.getElementById('dl-btn').href = url;
-      if (sizeMB) document.getElementById('file-size').textContent = `약 ${sizeMB} MB`;
+      if (url) {
+        document.getElementById('dl-btn').href     = url;
+        document.getElementById('dl-btn-top').href = url;
+      }
+      if (sizeMB) document.getElementById('file-size').textContent = `약 ${sizeMB} MB · zip`;
     } catch (_) {
       document.getElementById('ver-badge').textContent = 'v1.4.25';
-      document.getElementById('dl-btn').href =
-        'https://github.com/gomteng4/naver-blog-dist/releases/latest/download/naver-blog.zip';
+      const fallback = 'https://github.com/gomteng4/naver-blog-dist/releases/latest/download/naver-blog.zip';
+      document.getElementById('dl-btn').href     = fallback;
+      document.getElementById('dl-btn-top').href = fallback;
     }
   })();
 </script>
