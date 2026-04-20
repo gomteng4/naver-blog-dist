@@ -1036,7 +1036,7 @@
       ).then(x => x.json());
 
       const tag    = data.tag_name;
-      const asset  = data.assets?.find(a => a.name === 'naver-blog.zip');
+      const asset  = data.assets?.find(a => a.name.endsWith('.zip'));
       const url    = asset?.browser_download_url;
       const sizeMB = asset ? (asset.size / 1024 / 1024).toFixed(0) : null;
 
@@ -1044,11 +1044,15 @@
       if (url) {
         document.getElementById('dl-btn').href     = url;
         document.getElementById('dl-btn-top').href = url;
+      } else if (tag) {
+        const fallback = `https://github.com/gomteng4/naver-blog-dist/releases/download/${tag}/${data.assets?.[0]?.name || 'naver-blog.zip'}`;
+        document.getElementById('dl-btn').href     = fallback;
+        document.getElementById('dl-btn-top').href = fallback;
       }
       if (sizeMB) document.getElementById('file-size').textContent = `약 ${sizeMB} MB · zip`;
     } catch (_) {
-      document.getElementById('ver-badge').textContent = 'v1.4.25';
-      const fallback = 'https://github.com/gomteng4/naver-blog-dist/releases/latest/download/naver-blog.zip';
+      document.getElementById('ver-badge').textContent = 'v1.4.27';
+      const fallback = 'https://github.com/gomteng4/naver-blog-dist/releases/download/v1.4.27/naver-blog-v1.4.27.zip';
       document.getElementById('dl-btn').href     = fallback;
       document.getElementById('dl-btn-top').href = fallback;
     }
